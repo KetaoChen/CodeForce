@@ -3,7 +3,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 
-public class A_and_B_1278_B {
+public class A_and_B_1278B {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));

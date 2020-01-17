@@ -7,17 +7,14 @@ public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int n = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        int m = in.nextInt();
-        in.nextLine();
-
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
             arr[i] = in.nextInt();
         }
-        System.out.println(getMax(arr, m));
+        System.out.println(getRes(arr, 0));
     }
 
-    private static int getMax(int[] arr, int m) {
+    private static int getRes(int[] arr, int m) {
         Arrays.sort(arr);
         long sum = 0;
         int mod = 1000000007;

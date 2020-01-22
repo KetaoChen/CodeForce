@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Minimax_Problem {
+public class Minimax_Problem_1288D {
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int n = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.

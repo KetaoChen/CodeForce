@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-public class Div3_615_C {
+public class Product_of_Three_Numbers_1294C {
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int n = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.

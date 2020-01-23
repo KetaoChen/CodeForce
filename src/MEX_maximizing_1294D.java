@@ -4,7 +4,8 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 
-public class Div3_615_D {
+public class MEX_maximizing_1294D {
+    //To optimize the input and output method. Get some template
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int n = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.

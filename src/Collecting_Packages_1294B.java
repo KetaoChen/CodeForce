@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 
-public class Div3_615_B {
+public class Collecting_Packages_1294B {
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int n = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.

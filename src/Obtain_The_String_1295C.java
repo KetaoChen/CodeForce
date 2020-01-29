@@ -1,29 +1,53 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class Obtain_The_String_1295C implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        int x = in.nextInt();
+        int t = Integer.parseInt(in.nextLine()); // Scanner has functions to read ints, longs, strings, chars, etc.
 
-        int[] count = new int[x];
-        int start = 0;
+        for (int i = 0; i < t; i++) {
+            String s = in.nextLine();
+            String target = in.nextLine();
 
-        for (int i = 0; i < q; i++) {
-            count[in.nextInt() % x]++;
-            while (count[start % x] > (start / x)) {
-                start++;
-            }
-            w.println(start);
+            w.println(getRes(s, target));
         }
         w.flush();
         w.close();
+    }
+
+    private static int getRes(String s, String t) {
+        int res = 0;
+        int[][] firstIndex = new int[s.length()][26];
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            for (int j = 0; j < 26; j++) {
+                if (i == s.length() - 1) {
+                    firstIndex[i][j] = j == c - 'a' ? i : -1;
+                    continue;
+                }
+                firstIndex[i][j] = j == c - 'a' ? i : firstIndex[i + 1][j];
+            }
+        }
+
+        int index = 0;
+        for (char c : t.toCharArray()) {
+            if (firstIndex[0][c - 'a'] == -1) {
+                return -1;
+            }
+
+            if (index >= s.length() || firstIndex[index][c - 'a'] == -1) {
+                index = 0;
+                res++;
+            }
+
+            index = firstIndex[index][c - 'a'] + 1;
+        }
+        return res + 1;
     }
 
 
@@ -209,7 +233,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new Obtain_The_String_1295C(),"Main",1<<27).start();
     }
 
 }

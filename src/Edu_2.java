@@ -1,32 +1,56 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Map;
 
 
-public class Main implements Runnable
+public class Edu_2 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        int x = in.nextInt();
+        //int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        String s = in.nextLine();
+        int t = Integer.parseInt(s);
 
-        int[] count = new int[x];
-        int start = 0;
+        for (int i = 0; i < t; i++) {
+            s = in.nextLine();
+            //System.out.println("this is the first line" + s);
+            String[] str = s.split(" ");
+            //System.out.println(str.length);
+            s = in.nextLine();
+            //System.out.println(s);
+            int res = getRes(Integer.parseInt(str[0]), Integer.parseInt(str[1]), s);
 
-        for (int i = 0; i < q; i++) {
-            count[in.nextInt() % x]++;
-            while (count[start % x] > (start / x)) {
-                start++;
-            }
-            w.println(start);
+            w.println(res);
         }
         w.flush();
         w.close();
     }
 
+    private static int getRes(int n, int x, String s) {
+        int res = 0;
+        s = s + s;
+        //asking how many substrings have sum = 0;
+        int[] prefix = new int[2 * s.length() + 1];
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int i = 0; i < s.length(); i++) {
+            prefix[i + 1] = s.charAt(i) == '0' ? prefix[i] + 1 : prefix[i] - 1;
+            map.put(prefix[i + 1], map.getOrDefault(prefix[i + 1], 0) + 1);
+        }
 
+        for (int i :map.keySet()) {
+            res = Math.max(res, map.get(i));
+        }
+
+        if (prefix[s.length()] == 0) {
+            return map.containsKey(x) ? -1 : 0;
+        }
+
+        return (long)x * prefix[s.length()] < 0 ? map.containsKey(x) ? res : 0 : res;
+    }
 
 
     static class InputReader
@@ -209,7 +233,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new Edu_2(),"Main",1<<27).start();
     }
 
 }

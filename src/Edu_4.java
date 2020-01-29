@@ -1,32 +1,69 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 
 
-public class Main implements Runnable
+public class Edu_4 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        int x = in.nextInt();
-
-        int[] count = new int[x];
-        int start = 0;
 
         for (int i = 0; i < q; i++) {
-            count[in.nextInt() % x]++;
-            while (count[start % x] > (start / x)) {
-                start++;
-            }
-            w.println(start);
+            long a = in.nextLong();
+            long b = in.nextLong();
+
+            w.println(getRes(a, b));
         }
         w.flush();
         w.close();
     }
 
+    private static long getRes(long a, long b) {
+        long gcd = getGcd(a, b);
+        long num = b / gcd;
+        long temp = num;
+        List<Long> list = new ArrayList<>();
+        list.add(1L);
+        for (long i = 2; i * i <= temp; i++) {
+            long add = 1;
+            while (temp % i == 0) {
+                temp /= i;
+                add *= i;
+            }
+            if (i == gcd) {
+                continue;
+            }
+            if (i != 1) {
+                list.add(i);
+            }
+        }
+        System.out.println("num is " + num + " size is " + list.size());
+        return num - cal(list, num,1L, 0, 0);
+    }
 
+    private static long cal(List<Long> list, long num, long multi, int index, int count) {
+        if (index == list.size()) {
+            return count % 2 == 0 ? num / multi : - num / multi;
+        }
+
+        long res = 0;
+        for (int i = index; i < list.size(); i++) {
+            res += cal(list, num, multi * list.get(i), i + 1, count + 1);
+        }
+        return res;
+    }
+
+
+    private static long getGcd(long a, long b) {
+        if (a == 0) {
+            return b;
+        }
+        return getGcd(b % a, a);
+    }
 
 
     static class InputReader
@@ -209,7 +246,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new Edu_4(),"Main",1<<27).start();
     }
 
 }

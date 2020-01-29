@@ -1,32 +1,36 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class Display_The_Number_1295A implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        int x = in.nextInt();
+        int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
 
-        int[] count = new int[x];
-        int start = 0;
 
-        for (int i = 0; i < q; i++) {
-            count[in.nextInt() % x]++;
-            while (count[start % x] > (start / x)) {
-                start++;
-            }
-            w.println(start);
+        for (int i = 0; i < t; i++) {
+            w.println(getRes(in.nextInt()));
         }
         w.flush();
         w.close();
     }
 
-
+    private static String getRes(int x) {
+        //always want more digits, which is 1.
+        //or get 7.
+        StringBuilder sb = new StringBuilder();
+        int numOf1 = x % 2 == 0 ? x / 2 : x / 2 - 1;
+        if (x % 2 == 1) {
+            sb.append(7);
+        }
+        for (int i = 0; i < numOf1; i++) {
+            sb.append(1);
+        }
+        return sb.toString();
+    }
 
 
     static class InputReader
@@ -209,7 +213,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new Display_The_Number_1295A(),"Main",1<<27).start();
     }
 
 }

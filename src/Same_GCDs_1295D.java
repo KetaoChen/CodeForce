@@ -3,8 +3,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
+//There is an easier way to do this.
+//if the total candidates number is num.
+//for each prime factor, num = num * (1 - 1 / prime)
 
-public class Edu_4 implements Runnable
+public class Same_GCDs_1295D implements Runnable
 {
     @Override
     public void run() {
@@ -253,7 +256,7 @@ public class Edu_4 implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Edu_4(),"Main",1<<27).start();
+        new Thread(null, new Same_GCDs_1295D(),"Main",1<<27).start();
     }
 
 }

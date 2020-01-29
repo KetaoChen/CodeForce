@@ -23,36 +23,43 @@ public class Edu_4 implements Runnable
     }
 
     private static long getRes(long a, long b) {
+        //System.out.println();
         long gcd = getGcd(a, b);
         long num = b / gcd;
         long temp = num;
         List<Long> list = new ArrayList<>();
-        list.add(1L);
         for (long i = 2; i * i <= temp; i++) {
-            long add = 1;
-            while (temp % i == 0) {
-                temp /= i;
-                add *= i;
-            }
-            if (i == gcd) {
+            if (temp % i != 0) {
                 continue;
             }
+            while (temp % i == 0) {
+                temp /= i;
+            }
+
             if (i != 1) {
                 list.add(i);
             }
         }
-        System.out.println("num is " + num + " size is " + list.size());
-        return num - cal(list, num,1L, 0, 0);
+        if (temp != 1) {
+            list.add(temp);
+        }
+//        System.out.println("num is " + num + " size is " + list.size());
+//        for (long i : list) {
+//            System.out.println(i);
+//        }
+        return cal(list, num,1L, 0, 0);
     }
 
     private static long cal(List<Long> list, long num, long multi, int index, int count) {
+        long res = count % 2 == 0 ? num / multi : -num / multi;
         if (index == list.size()) {
-            return count % 2 == 0 ? num / multi : - num / multi;
+            return res;
         }
 
-        long res = 0;
         for (int i = index; i < list.size(); i++) {
-            res += cal(list, num, multi * list.get(i), i + 1, count + 1);
+            long add = cal(list, num, multi * list.get(i), i + 1, count + 1);
+            res += add;
+            //System.out.println(i + " " + add);
         }
         return res;
     }

@@ -3,7 +3,7 @@ import java.util.*;
 import java.lang.*;
 
 
-public class Main implements Runnable
+public class Assigning_to_Classes_1300B implements Runnable
 {
     @Override
     public void run() {
@@ -21,18 +21,12 @@ public class Main implements Runnable
     }
 
     private static int getRes(InputReader in, int x) {
-        int sum = 0;
-        int res = 0;
-        for (int i = 0; i < x; i++) {
-            int num = in.nextInt();
-            if (num == 0) {
-                num++;
-                res++;
-            }
-            sum += num;
+        int[] nums = new int[x * 2];
+        for (int i = 0; i < 2 * x; i++) {
+            nums[i] = in.nextInt();
         }
-
-        return sum == 0 ? res + 1 : res;
+        Arrays.sort(nums);
+        return nums[x] - nums[x - 1];
     }
 
 
@@ -216,7 +210,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new Assigning_to_Classes_1300B(),"Main",1<<27).start();
     }
 
 }

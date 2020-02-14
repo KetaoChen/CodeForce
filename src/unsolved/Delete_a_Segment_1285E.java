@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-public class Delete_a_Segment {
+public class Delete_a_Segment_1285E {
     public static void main(String[] args) {
         Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
         int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.

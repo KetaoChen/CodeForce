@@ -3,75 +3,97 @@ import java.util.*;
 import java.lang.*;
 
 
-public class PizzaSmallData implements Runnable
+public class Fill_The_Bag_1303D implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        long n = in.nextLong(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        long m = in.nextLong();
-        long[] arr = new long[(int)m];
-        for (int i = 0; i < m; i++) {
-            arr[i] = in.nextLong();
-        }
-        List<Integer> res = getRes2(n, arr);
-        w.println(res.size());
-        for (int i = res.size() - 1; i >= 0; i--) {
-            w.print(res.get(i) + " ");
+        long q = in.nextLong(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        for (int i = 0; i < q; i++) {
+            long n = in.nextLong();
+            long m = in.nextLong();
+
+            //System.out.println(n + " " + m);
+            long[] arr = new long[(int)m];
+            for (int k = 0; k < m; k++) {
+                arr[k] = in.nextLong();
+            }
+
+
+            w.println(getRes(n, arr));
         }
         w.flush();
         w.close();
     }
 
-    private static List<Integer> getRes2(long target, long[] arr) {
-        List<Integer> res = new ArrayList<>();
-
-        int index = arr.length - 1;
-        while (index >= 0) {
-            while (index >= 0 && target >= arr[index]) {
-                res.add(index);
-                target -= arr[index--];
-            }
-            index--;
+    private static int getRes(long n, long[] arr) {
+        long sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
         }
-        return res;
-    }
-
-    private static List<Integer> getRes(int target, int[] arr) {
-        List<Integer> res = new ArrayList<>();
-        int l = arr.length;
-        boolean[][] dp = new boolean[l + 1][target + 1];
-        dp[0][0] = true;
-
-        for (int i = 1; i <= l; i++) {
-            int val = arr[i - 1];
-            for (int j = 0; j <= target; j++) {
-                dp[i][j] = dp[i - 1][j];
-                if (j >= val) {
-                    dp[i][j] |= dp[i - 1][j - val];
-                }
-            }
+        if (sum < n) {
+            return -1;
         }
 
-        int i = l, j = target;
-        while (j >= 0 && i > 0) {
-
-            if (dp[i][j]) {
-                //System.out.println(i + " " + j);
-                if (j >= arr[i - 1] && dp[i - 1][j - arr[i - 1]]) {
-                    i--;
-                    res.add(i);
-                    j-=arr[i];
+        long temp = n;
+        sum = 0;
+        for (long num : arr) {
+            for (int i = 0; i < 60; i++) {
+                if (((temp >> i) & 1) == 1 && ((sum >> i) & 1) == 1) {
+                    temp = (temp ^ (1 << i));
+                    sum = (sum ^ (1 << i));
                 }
-                else {
-                    i--;
-                }
+            }
+            if ((temp & num) == 1) {
+                temp = (temp ^ num);
             }
             else {
-                j--;
+                sum += num;
             }
         }
+        //System.out.println(temp + " " + sum);
+        for (int i = 0; i < 60; i++) {
+            //System.out.println(i + " " + ((temp >> i) & 1));
+            //System.out.println(i + " " + ((sum >> i) & 1));
+            if (((temp >> i) & 1) == 1 && ((sum >> i) & 1) == 1) {
+                temp = (temp ^ (1 << i));
+                sum = (sum ^ (1 << i));
+            }
+        }
+
+        //System.out.println(temp + " " + sum);
+        int res = 0, index = 0;
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] used = new boolean[60];
+        while (sum > 0) {
+            if ((sum & 1) == 1) {
+                q.offer(index);
+                used[index] = true;
+            }
+            index++;
+            sum >>= 1;
+        }
+
+        while (!q.isEmpty()) {
+            int s = q.size();
+            for (int i = 0; i < s; i++) {
+                int cur = q.poll();
+                //System.out.println(res + " " + cur);
+                if (((temp >> cur) & 1) == 1) {
+                    temp = (temp ^ (1 << cur));
+                }
+                if (cur > 0 && !used[cur - 1]) {
+                    q.offer(cur - 1);
+                    used[cur - 1] = true;
+                }
+            }
+            if (temp == 0) {
+                return res;
+            }
+            res++;
+        }
+        //System.out.println(temp);
         return res;
     }
 
@@ -256,7 +278,7 @@ public class PizzaSmallData implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new PizzaSmallData(),"Main",1<<27).start();
+        new Thread(null, new Fill_The_Bag_1303D(),"Main",1<<27).start();
     }
 
 }

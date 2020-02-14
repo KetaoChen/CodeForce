@@ -3,7 +3,7 @@ import java.util.*;
 import java.lang.*;
 
 
-public class C1 implements Runnable
+public class Motaracks_Birthday_1301B implements Runnable
 {
     @Override
     public void run() {
@@ -11,32 +11,36 @@ public class C1 implements Runnable
         PrintWriter w = new PrintWriter(System.out);
         int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
         for (int i = 0; i < q; i++) {
-            int a = in.nextInt();
-            int b = in.nextInt();
-
-            w.println(getRes(a, b));
+            int x = in.nextInt();
+            int[] arr = new int[x];
+            for (int j = 0; j < x; j++) {
+                arr[j] = in.nextInt();
+            }
+            int[] res = (getRes(arr));
+            w.print(res[0] + " ");
+            w.println(res[1]);
         }
         w.flush();
         w.close();
     }
 
-    private static long getRes(int n, int m) {
+    private static int[] getRes(int[] arr) {
+        int diff = 0, max = 0, min = Integer.MAX_VALUE;
+        for (int i = 0; i < arr.length; i++) {
 
-        long sum = combo(n);
-
-        int dis = n - m;
-        //the distance will be divide into m + 1 parts;
-        //System.out.println(m + 1);
-        int each = dis / (m + 1);
-        if (each == 0) {
-            return sum - (n - m);
+            if (arr[i] != -1 && ((i > 0 && arr[i - 1] == -1) || (i < arr.length - 1 && arr[i + 1] == -1))) {
+                max = Math.max(max, arr[i]);
+                min = Math.min(min, arr[i]);
+            }
+            if (i > 0 && arr[i - 1] != -1 && arr[i] != -1) {
+                diff = Math.max(diff, Math.abs(arr[i] - arr[i - 1]));
+            }
         }
-        int mod = dis % (m + 1);
-        return sum - ((long) mod) * combo(each + 1) - ((long) m + 1 - mod) * combo(each);
-    }
-
-    private static long combo(int a) {
-        return ((long) a) * (a - 1) / 2 + a;
+        //System.out.println(max + " " + min);
+        if (min == Integer.MAX_VALUE) {
+            return new int[]{diff, 0};
+        }
+        return new int[]{Math.max(diff, (max - min + 1) / 2), (max + min + 1) / 2};
     }
 
 
@@ -220,7 +224,7 @@ public class C1 implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new C1(),"Main",1<<27).start();
+        new Thread(null, new Motaracks_Birthday_1301B(),"Main",1<<27).start();
     }
 
 }

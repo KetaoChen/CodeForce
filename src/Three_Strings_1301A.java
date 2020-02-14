@@ -3,44 +3,36 @@ import java.util.*;
 import java.lang.*;
 
 
-public class B1 implements Runnable
+public class Three_Strings_1301A implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        int q = Integer.parseInt(in.nextLine()); // Scanner has functions to read ints, longs, strings, chars, etc.
         for (int i = 0; i < q; i++) {
-            int x = in.nextInt();
-            int[] arr = new int[x];
-            for (int j = 0; j < x; j++) {
-                arr[j] = in.nextInt();
-            }
-            int[] res = (getRes(arr));
-            w.print(res[0] + " ");
-            w.println(res[1]);
+            String a = in.nextLine();
+            String b = in.nextLine();
+            String c = in.nextLine();
+
+            w.println(getRes(a, b, c));
         }
         w.flush();
         w.close();
     }
 
-    private static int[] getRes(int[] arr) {
-        int diff = 0, max = 0, min = Integer.MAX_VALUE;
-        for (int i = 0; i < arr.length; i++) {
-
-            if (arr[i] != -1 && ((i > 0 && arr[i - 1] == -1) || (i < arr.length - 1 && arr[i + 1] == -1))) {
-                max = Math.max(max, arr[i]);
-                min = Math.min(min, arr[i]);
+    private static String getRes(String a, String b, String c) {
+        int l = a.length();
+        for (int i = 0; i < l; i++) {
+            char ac = a.charAt(i);
+            char bc = b.charAt(i);
+            char cc = c.charAt(i);
+            if (cc == ac || cc == bc) {
+                continue;
             }
-            if (i > 0 && arr[i - 1] != -1 && arr[i] != -1) {
-                diff = Math.max(diff, Math.abs(arr[i] - arr[i - 1]));
-            }
+            return "NO";
         }
-        //System.out.println(max + " " + min);
-        if (min == Integer.MAX_VALUE) {
-            return new int[]{diff, 0};
-        }
-        return new int[]{Math.max(diff, (max - min + 1) / 2), (max + min + 1) / 2};
+        return "YES";
     }
 
 
@@ -224,7 +216,7 @@ public class B1 implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B1(),"Main",1<<27).start();
+        new Thread(null, new Three_Strings_1301A(),"Main",1<<27).start();
     }
 
 }

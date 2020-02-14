@@ -3,36 +3,40 @@ import java.util.*;
 import java.lang.*;
 
 
-public class A1 implements Runnable
+public class Ayoubs_function_1301C implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = Integer.parseInt(in.nextLine()); // Scanner has functions to read ints, longs, strings, chars, etc.
+        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
         for (int i = 0; i < q; i++) {
-            String a = in.nextLine();
-            String b = in.nextLine();
-            String c = in.nextLine();
+            int a = in.nextInt();
+            int b = in.nextInt();
 
-            w.println(getRes(a, b, c));
+            w.println(getRes(a, b));
         }
         w.flush();
         w.close();
     }
 
-    private static String getRes(String a, String b, String c) {
-        int l = a.length();
-        for (int i = 0; i < l; i++) {
-            char ac = a.charAt(i);
-            char bc = b.charAt(i);
-            char cc = c.charAt(i);
-            if (cc == ac || cc == bc) {
-                continue;
-            }
-            return "NO";
+    private static long getRes(int n, int m) {
+
+        long sum = combo(n);
+
+        int dis = n - m;
+        //the distance will be divide into m + 1 parts;
+        //System.out.println(m + 1);
+        int each = dis / (m + 1);
+        if (each == 0) {
+            return sum - (n - m);
         }
-        return "YES";
+        int mod = dis % (m + 1);
+        return sum - ((long) mod) * combo(each + 1) - ((long) m + 1 - mod) * combo(each);
+    }
+
+    private static long combo(int a) {
+        return ((long) a) * (a - 1) / 2 + a;
     }
 
 
@@ -216,7 +220,7 @@ public class A1 implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A1(),"Main",1<<27).start();
+        new Thread(null, new Ayoubs_function_1301C(),"Main",1<<27).start();
     }
 
 }

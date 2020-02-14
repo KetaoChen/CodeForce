@@ -14,25 +14,14 @@ public class Main implements Runnable
             int x = in.nextInt();
 
 
-            w.println(getRes(in ,x));
+            getRes(w);
         }
         w.flush();
         w.close();
     }
 
-    private static int getRes(InputReader in, int x) {
-        int sum = 0;
-        int res = 0;
-        for (int i = 0; i < x; i++) {
-            int num = in.nextInt();
-            if (num == 0) {
-                num++;
-                res++;
-            }
-            sum += num;
-        }
+    private static void getRes(PrintWriter w) {
 
-        return sum == 0 ? res + 1 : res;
     }
 
 

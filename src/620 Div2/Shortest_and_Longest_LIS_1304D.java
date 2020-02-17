@@ -3,36 +3,73 @@ import java.util.*;
 import java.lang.*;
 
 
-public class A implements Runnable
+public class Shortest_and_Longest_LIS_1304D implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        int q = Integer.parseInt(in.nextLine()); // Scanner has functions to read ints, longs, strings, chars, etc.
         for (int i = 0; i < q; i++) {
-            int x = in.nextInt();
-            int y = in.nextInt();
-            int a = in.nextInt();
-            int b = in.nextInt();
-
-
-            getRes(w, x, y, a, b);
+            String s = in.nextLine();
+            getRes(w, s);
         }
         w.flush();
         w.close();
     }
 
-    private static void getRes(PrintWriter w, int x, int y, int a, int b) {
-        int dis = y - x;
-        int jump = a + b;
-        if (dis % jump == 0) {
-            w.println(dis / jump);
+    private static void getRes(PrintWriter w, String s) {
+        int l = Integer.parseInt(s.split(" ")[0]);
+        s = s.split(" ")[1];
+
+        int min = 1;
+        int max = l;
+        StringBuilder longest = new StringBuilder();
+        int[] longg = new int[l];
+        for (int i = l - 2; i >= 0; i--) {
+            char c = s.charAt(i);
+            if (c == '<') {
+                longg[i + 1] = max--;
+            }
+            else {
+                longg[i + 1] = min++;
+            }
         }
-        else {
-            w.println(-1);
+        longg[0] = max;
+        for (int num : longg) {
+            longest.append(num + " ");
         }
 
+        max = l;
+        int count = 0;
+        int index = 0;
+        StringBuilder shortest = new StringBuilder();
+        while (index < s.length()) {
+            if (s.charAt(index) == '>') {
+                shortest.append(max-- + " ");
+                index++;
+            }
+
+            else {
+                while (index < s.length() && s.charAt(index) == '<') {
+                    count++;
+                    index++;
+                }
+                int temp = max - count - 1;
+                while (count > 0) {
+                    shortest.append(max - count + " ");
+                    count--;
+                }
+                index++;
+                shortest.append(max + " ");
+                max = temp;
+            }
+        }
+        if (max == 1) {
+            shortest.append(max);
+        }
+        w.println(shortest.toString().trim());
+        w.println(longest.toString().trim());
     }
 
 
@@ -216,7 +253,7 @@ public class A implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A(),"Main",1<<27).start();
+        new Thread(null, new Shortest_and_Longest_LIS_1304D(),"Main",1<<27).start();
     }
 
 }

@@ -3,43 +3,54 @@ import java.util.*;
 import java.lang.*;
 
 
-public class C implements Runnable
+public class Longest_Palindrome_1304B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        for (int i = 0; i < q; i++) {
-            int n = in.nextInt();
-            int m = in.nextInt();
-            int[][] arr = new int[n][3];
-            for (int k = 0; k < n; k++) {
-                for (int j = 0; j < 3; j++)
-                arr[k][j] = in.nextInt();
-            }
-            getRes(w, arr, m);
+        String s = in.nextLine(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        String[] ss = s.split(" ");
+        //System.out.println(ss.length + " " + ss[0] + " " + ss[1]);
+        String[] strs = new String[Integer.parseInt(ss[0])];
+        for (int i = 0; i < Integer.parseInt(ss[0]); i++) {
+            strs[i] = in.nextLine();
+            //System.out.println(strs[i]);
         }
+        getRes(w, strs);
         w.flush();
         w.close();
     }
 
-    private static void getRes(PrintWriter w, int[][] arr, int start) {
-        int[] temp = {start, start};
-        int last = 0;
-        for (int[] c : arr) {
-            int diff = c[0] - last;
-            int up = temp[0] + diff;
-            int low = temp[1] - diff;
-            if (c[1] > up || c[2] < low) {
-                w.println("NO");
-                return;
+    private static void getRes(PrintWriter w, String[] strs) {
+        int res = 0;
+        int mid = 0;
+        String m = "";
+        StringBuilder left = new StringBuilder();
+        StringBuilder right = new StringBuilder();
+        Set<String> set = new HashSet<>();
+        for (String s : strs) {
+            StringBuilder sb = new StringBuilder(s);
+            String reverse = sb.reverse().toString();
+            if (set.contains(s)) {
+                res += 2 * s.length();
+                StringBuilder temp = new StringBuilder(reverse);
+                left = temp.append(left);
+                right.append(s);
+                continue;
             }
-            temp[0] = Math.min(up, c[2]);
-            temp[1] = Math.max(low, c[1]);
-            last = c[0];
+
+            if (s.equals(reverse)) {
+                if (s.length() > mid) {
+                    mid = s.length();
+                    m = s;
+                }
+                continue;
+            }
+            set.add(reverse);
         }
-        w.println("YES");
+        w.println(res + mid);
+        w.println(left.toString() + m + right.toString());
     }
 
 
@@ -223,7 +234,7 @@ public class C implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new C(),"Main",1<<27).start();
+        new Thread(null, new Longest_Palindrome_1304B(),"Main",1<<27).start();
     }
 
 }

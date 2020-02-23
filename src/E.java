@@ -9,55 +9,12 @@ public class E implements Runnable
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        List<Integer>[] graph = new ArrayList[q];
-        for (int i = 0; i < q; i++) {
-            graph[i] = new ArrayList<>();
-            for (int j = 0; j < q - 1; j++) {
-                int f = in.nextInt();
-                int s = in.nextInt();
-                graph[f].add(s);
-                graph[s].add(f);
-            }
-        }
+        int t = in.nextInt();
 
-        int[] dis = new int[q + 1];
-        bfs(dis, graph);
-
-        int x = in.nextInt();
-        for (int i = 0; i < x; i++) {
-            getRes(in, w);
-        }
         w.flush();
         w.close();
     }
 
-    private static void getRes(InputReader in, PrintWriter w) {
-        for (int i = 0; i < 5; i++) {
-            int x = in.nextInt();
-            int y = in.nextInt();
-            int a = in.nextInt();
-            int b = in.nextInt();
-            int k = in.nextInt();
-        }
-    }
-
-    private static void bfs(int[] dis, List<Integer>[] graph) {
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        int d = 0;
-        while (!q.isEmpty()) {
-            int s = q.size();
-            for (int i = 0; i < s; i++) {
-                int cur = q.poll();
-                dis[cur] = d;
-                for (int next : graph[cur]) {
-                    q.offer(next);
-                }
-            }
-            d++;
-        }
-    }
 
     static class InputReader
     {

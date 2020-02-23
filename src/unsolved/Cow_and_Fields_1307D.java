@@ -34,47 +34,47 @@ public class Cow_and_Fields_1307D implements Runnable
     }
 
     private static void getRes(PrintWriter w, List<Integer>[] graph, int[] arr) {
-        int l = graph.length;
-        int[] disFrom1 = bfs(graph, 1);
-        int[] disFromN = bfs(graph, l - 1);
-
-
-        List<Integer> list = new ArrayList<>();
-        for (int v : arr) {
-            list.add(dis[v]);
-        }
-        Collections.sort(list);
-        int min = l;
-        for (int i = 1; i < list.size(); i++) {
-            min = Math.min(min, list.get(i) - list.get(i - 1));
-        }
-        w.println(dis[1] - Math.max(0, min - 1));
-    }
-
-    private static int[] bfs(List<Integer>[] graph, int start) {
-        int l = graph.length;
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] visited = new boolean[l];
-        int[] dis = new int[l];
-        visited[start] = true;
-
-        q.offer(start);
-        int d = 0;
-        while (!q.isEmpty()) {
-            int s = q.size();
-            for (int i = 0; i < s; i++) {
-                int cur= q.poll();
-                dis[cur] = d;
-                for (int next : graph[cur]) {
-                    if (!visited[next]) {
-                        q.offer(next);
-                        visited[next] = true;
-                    }
-                }
-            }
-            d++;
-        }
-        return dis;
+//        int l = graph.length;
+//        int[] disFrom1 = bfs(graph, 1);
+//        int[] disFromN = bfs(graph, l - 1);
+//
+//
+//        List<Integer> list = new ArrayList<>();
+//        for (int v : arr) {
+//            list.add(dis[v]);
+//        }
+//        Collections.sort(list);
+//        int min = l;
+//        for (int i = 1; i < list.size(); i++) {
+//            min = Math.min(min, list.get(i) - list.get(i - 1));
+//        }
+//        w.println(dis[1] - Math.max(0, min - 1));
+//    }
+//
+//    private static int[] bfs(List<Integer>[] graph, int start) {
+//        int l = graph.length;
+//        Queue<Integer> q = new LinkedList<>();
+//        boolean[] visited = new boolean[l];
+//        int[] dis = new int[l];
+//        visited[start] = true;
+//
+//        q.offer(start);
+//        int d = 0;
+//        while (!q.isEmpty()) {
+//            int s = q.size();
+//            for (int i = 0; i < s; i++) {
+//                int cur= q.poll();
+//                dis[cur] = d;
+//                for (int next : graph[cur]) {
+//                    if (!visited[next]) {
+//                        q.offer(next);
+//                        visited[next] = true;
+//                    }
+//                }
+//            }
+//            d++;
+//        }
+//        return dis;
     }
 
     static class InputReader

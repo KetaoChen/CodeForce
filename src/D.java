@@ -3,7 +3,7 @@ import java.util.*;
 import java.lang.*;
 
 
-public class Main implements Runnable
+public class D implements Runnable
 {
     @Override
     public void run() {
@@ -196,7 +196,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D(),"Main",1<<27).start();
     }
 
 }

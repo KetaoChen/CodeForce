@@ -16,6 +16,19 @@ public class Main implements Runnable
     }
 
 
+
+    // the base is n. The prime mod is mod.
+    final static int p =(int) (1e9 + 7);
+    public static long[] getInvArray(int n) {
+        long[] inv = new long[n + 1];
+        inv[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            inv[i] = ((p - p / i) * inv[p % i] % p + p) % p;
+        }
+        return inv;
+    }
+
+
     static class InputReader
     {
         private InputStream stream;

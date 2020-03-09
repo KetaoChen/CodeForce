@@ -1,79 +1,13 @@
 package Div2_622;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.Stack;
 
 
-public class C implements Runnable {
-    private static void getRes(PrintWriter w, int[] arr) {
-        int[] nextSmallFromLeft = new int[arr.length];
-        Stack<Integer> stack = new Stack<>();
-        stack.push(-1);
-        for (int i = 0; i < arr.length; i++) {
-            while (stack.peek() != -1 && arr[stack.peek()] > arr[i]) {
-                stack.pop();
-            }
-            nextSmallFromLeft[i] = stack.peek();
-            stack.push(i);
-        }
-
-        while (stack.isEmpty()) {
-            stack.pop();
-        }
-        stack.push(arr.length);
-        int[] nextSmallFromRight = new int[arr.length];
-        for (int i = arr.length - 1; i >= 0; i--) {
-            while (stack.peek() != arr.length && arr[stack.peek()] > arr[i]) {
-                stack.pop();
-            }
-            nextSmallFromRight[i] = stack.peek();
-            stack.push(i);
-        }
-
-        long[] valFromLeft = new long[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            long dp = nextSmallFromLeft[i] == -1 ? 0 : valFromLeft[nextSmallFromLeft[i]];
-            valFromLeft[i] = dp + (long) (i - nextSmallFromLeft[i]) * (long) arr[i];
-        }
-
-        long[] valFromRight = new long[arr.length];
-        for (int i = arr.length - 1; i >= 0; i--) {
-            long dp = nextSmallFromRight[i] == arr.length ? 0 : valFromRight[nextSmallFromRight[i]];
-            valFromRight[i] = dp + (long) (nextSmallFromRight[i] - i) * (long) arr[i];
-        }
-
-        long max = 0L;
-        int index = 0;
-        for (int i = 0; i < arr.length; i++) {
-            long sum = valFromLeft[i] + valFromRight[i] - arr[i];
-            if (sum > max) {
-                max = sum;
-                index = i;
-            }
-        }
-
-        int[] res = new int[arr.length];
-        int m = arr[index];
-        res[index] = m;
-        for (int j = index - 1; j >= 0; j--) {
-            m = arr[j] <= m ? arr[j] : m;
-            res[j] = m;
-        }
-        m = arr[index];
-        for (int j = index + 1; j < arr.length; j++) {
-            m = arr[j] <= m ? arr[j] : m;
-            res[j] = m;
-        }
-
-        for (int i = 0; i < res.length; i++) {
-            w.println(res[i] + " ");
-        }
-
-    }
-
+public class Fast_Food_Restaurant_1313A implements Runnable {
     public static void main(String[] args) throws Exception {
-        new Thread(null, new C(), "Main", 1 << 27).start();
+        new Thread(null, new Fast_Food_Restaurant_1313A(), "Main", 1 << 27).start();
     }
 
     @Override
@@ -81,12 +15,44 @@ public class C implements Runnable {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
-        int[] arr = new int[t];
         for (int i = 0; i < t; i++) {
-            arr[i] = in.nextInt();
+            int[] nums = new int[3];
+            nums[0] = in.nextInt();
+            nums[1] = in.nextInt();
+            nums[2] = in.nextInt();
+            Arrays.sort(nums);
+            int res = 0;
+            if (nums[0] >= 4) {
+                res = 7;
+            } else if (nums[2] == 0) {
+                res = 0;
+            } else {
+                if (nums[0] == 0) {
+                    if (nums[1] == 0) {
+                        res = 1;
+                    } else if (nums[1] == 1) {
+                        res = 2;
+                    } else {
+                        res = 3;
+                    }
+                } else if (nums[0] == 1) {
+                    if (nums[1] == 1) {
+                        res = 3;
+                    } else {
+                        res = 4;
+                    }
+                } else if (nums[0] == 2) {
+                    if (nums[2] == 2) {
+                        res = 4;
+                    } else {
+                        res = 5;
+                    }
+                } else if (nums[0] == 3) {
+                    res = 6;
+                }
+            }
+            w.println(res);
         }
-
-        getRes(w, arr);
         w.flush();
         w.close();
     }

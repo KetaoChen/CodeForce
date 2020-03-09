@@ -1,3 +1,5 @@
+package Edu_Div2_83;
+
 import java.io.*;
 import java.util.InputMismatchException;
 

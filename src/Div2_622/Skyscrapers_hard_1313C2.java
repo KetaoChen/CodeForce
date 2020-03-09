@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Stack;
 
 
-public class D implements Runnable {
+public class Skyscrapers_hard_1313C2 implements Runnable {
     private static void getRes(PrintWriter w, int[] arr) {
         long[] valFromLeft = new long[arr.length];
         Stack<Integer> stack = new Stack<>();
@@ -64,7 +64,7 @@ public class D implements Runnable {
     }
 
     public static void main(String[] args) throws Exception {
-        new Thread(null, new D(), "Main", 1 << 27).start();
+        new Thread(null, new Skyscrapers_hard_1313C2(), "Main", 1 << 27).start();
     }
 
     @Override

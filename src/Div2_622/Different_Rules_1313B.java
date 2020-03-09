@@ -1,53 +1,42 @@
+package Div2_622;
+
 import java.io.*;
-import java.util.HashSet;
 import java.util.InputMismatchException;
-import java.util.Set;
+
+// 1,2,3,4,5
+// 5,4,3,2,1
+
+// best.. check the sum. if smaller than n+1 == 1
+
+// worst.. if larger than
 
 
-public class C1 implements Runnable {
-    private static void getRes(PrintWriter w, long[] arr, int k) {
-        Set<Integer> set = new HashSet<>();
-        for (long num : arr) {
-            int index = 1;
-            while (num > 0) {
-                int d = (int) (num % k);
-                if (d >= 2) {
-                    w.println("NO");
-                    return;
-                }
-                if (d == 1) {
-                    if (set.contains(index)) {
-                        w.println("NO");
-                        return;
-                    }
-                    set.add(index);
-                }
-                index++;
-                num /= k;
-            }
-        }
-        w.println("YES");
+public class Different_Rules_1313B implements Runnable {
+    private static void getRes(PrintWriter w, int n, int a, int b) {
+        int min = Math.min(a, b);
+        int max = Math.max(a, b);
+
+        int sum = a + b;
+
+        int best = Math.max(1, Math.min(n, sum - n + 1));
+        int worst = Math.min(n, max + min - 1);
+        w.println(best + " " + worst);
     }
 
-    public static void main(String[] args) throws Exception
-    {
-        new Thread(null, new C1(), "Main", 1 << 27).start();
+    public static void main(String[] args) throws Exception {
+        new Thread(null, new Different_Rules_1313B(), "Main", 1 << 27).start();
     }
 
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        long t = in.nextLong();
+        //System.out.println(Integer.MAX_VALUE);
+        int t = in.nextInt();
         for (int i = 0; i < t; i++) {
-            int n = (int) in.nextLong();
-            int k = (int) in.nextLong();
-            long[] arr = new long[n];
-            for (int j = 0; j < n; j++) {
-                arr[j] = in.nextLong();
-            }
-            getRes(w, arr, k);
+            getRes(w, in.nextInt(), in.nextInt(), in.nextInt());
         }
+
         w.flush();
         w.close();
     }
@@ -60,66 +49,54 @@ public class C1 implements Runnable {
         private SpaceCharFilter filter;
         private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        public InputReader(InputStream stream)
-        {
+        public InputReader(InputStream stream) {
             this.stream = stream;
         }
 
-        public int read()
-        {
-            if (numChars==-1)
+        public int read() {
+            if (numChars == -1)
                 throw new InputMismatchException();
 
-            if (curChar >= numChars)
-            {
+            if (curChar >= numChars) {
                 curChar = 0;
-                try
-                {
+                try {
                     numChars = stream.read(buf);
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     throw new InputMismatchException();
                 }
 
-                if(numChars <= 0)
+                if (numChars <= 0)
                     return -1;
             }
             return buf[curChar++];
         }
 
-        public String nextLine()
-        {
+        public String nextLine() {
             String str = "";
-            try
-            {
+            try {
                 str = br.readLine();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return str;
         }
-        public int nextInt()
-        {
+
+        public int nextInt() {
             int c = read();
 
-            while(isSpaceChar(c))
+            while (isSpaceChar(c))
                 c = read();
 
             int sgn = 1;
 
-            if (c == '-')
-            {
+            if (c == '-') {
                 sgn = -1;
                 c = read();
             }
 
             int res = 0;
-            do
-            {
-                if(c<'0'||c>'9')
+            do {
+                if (c < '0' || c > '9')
                     throw new InputMismatchException();
                 res *= 10;
                 res += c - '0';
@@ -130,21 +107,18 @@ public class C1 implements Runnable {
             return res * sgn;
         }
 
-        public long nextLong()
-        {
+        public long nextLong() {
             int c = read();
             while (isSpaceChar(c))
                 c = read();
             int sgn = 1;
-            if (c == '-')
-            {
+            if (c == '-') {
                 sgn = -1;
                 c = read();
             }
             long res = 0;
 
-            do
-            {
+            do {
                 if (c < '0' || c > '9')
                     throw new InputMismatchException();
                 res *= 10;
@@ -155,20 +129,17 @@ public class C1 implements Runnable {
             return res * sgn;
         }
 
-        public double nextDouble()
-        {
+        public double nextDouble() {
             int c = read();
             while (isSpaceChar(c))
                 c = read();
             int sgn = 1;
-            if (c == '-')
-            {
+            if (c == '-') {
                 sgn = -1;
                 c = read();
             }
             double res = 0;
-            while (!isSpaceChar(c) && c != '.')
-            {
+            while (!isSpaceChar(c) && c != '.') {
                 if (c == 'e' || c == 'E')
                     return res * Math.pow(10, nextInt());
                 if (c < '0' || c > '9')
@@ -177,12 +148,10 @@ public class C1 implements Runnable {
                 res += c - '0';
                 c = read();
             }
-            if (c == '.')
-            {
+            if (c == '.') {
                 c = read();
                 double m = 1;
-                while (!isSpaceChar(c))
-                {
+                while (!isSpaceChar(c)) {
                     if (c == 'e' || c == 'E')
                         return res * Math.pow(10, nextInt());
                     if (c < '0' || c > '9')
@@ -195,14 +164,12 @@ public class C1 implements Runnable {
             return res * sgn;
         }
 
-        public String readString()
-        {
+        public String readString() {
             int c = read();
             while (isSpaceChar(c))
                 c = read();
             StringBuilder res = new StringBuilder();
-            do
-            {
+            do {
                 res.appendCodePoint(c);
                 c = read();
             }
@@ -211,21 +178,18 @@ public class C1 implements Runnable {
             return res.toString();
         }
 
-        public boolean isSpaceChar(int c)
-        {
+        public boolean isSpaceChar(int c) {
             if (filter != null)
                 return filter.isSpaceChar(c);
             return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
         }
 
-        public String next()
-        {
+        public String next() {
             return readString();
         }
 
-        public interface SpaceCharFilter
-        {
-            public boolean isSpaceChar(int ch);
+        public interface SpaceCharFilter {
+            boolean isSpaceChar(int ch);
         }
     }
 

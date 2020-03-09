@@ -1,43 +1,55 @@
+package Edu_Div2_83;
+
 import java.io.*;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Set;
 
 
-public class B1 implements Runnable {
-    private static void getRes(PrintWriter w, int[] arr) {
-        Arrays.sort(arr);
-        int left = 0;
-        int right = arr.length - 1;
-        while (left < right) {
-            int temp = arr[left];
-            arr[left++] = arr[right];
-            arr[right--] = temp;
+public class C1 implements Runnable {
+    private static void getRes(PrintWriter w, long[] arr, int k) {
+        Set<Integer> set = new HashSet<>();
+        for (long num : arr) {
+            int index = 1;
+            while (num > 0) {
+                int d = (int) (num % k);
+                if (d >= 2) {
+                    w.println("NO");
+                    return;
+                }
+                if (d == 1) {
+                    if (set.contains(index)) {
+                        w.println("NO");
+                        return;
+                    }
+                    set.add(index);
+                }
+                index++;
+                num /= k;
+            }
         }
-        for (int num : arr) {
-            w.print(num + " ");
-        }
-        w.println();
+        w.println("YES");
     }
 
     public static void main(String[] args) throws Exception
     {
-        new Thread(null, new B1(), "Main", 1 << 27).start();
+        new Thread(null, new C1(), "Main", 1 << 27).start();
     }
 
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int t = in.nextInt();
+        long t = in.nextLong();
         for (int i = 0; i < t; i++) {
-            int n = in.nextInt();
-            int[] arr = new int[n];
+            int n = (int) in.nextLong();
+            int k = (int) in.nextLong();
+            long[] arr = new long[n];
             for (int j = 0; j < n; j++) {
-                arr[j] = in.nextInt();
+                arr[j] = in.nextLong();
             }
-            getRes(w, arr);
+            getRes(w, arr, k);
         }
-
         w.flush();
         w.close();
     }

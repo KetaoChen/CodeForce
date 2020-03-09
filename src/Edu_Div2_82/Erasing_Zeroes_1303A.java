@@ -1,3 +1,5 @@
+package Edu_Div2_82;
+
 import java.io.*;
 import java.util.*;
 import java.lang.*;

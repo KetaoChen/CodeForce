@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Set;
 
 
-public class C1 implements Runnable {
+public class Adding_Powers_1312C implements Runnable {
     private static void getRes(PrintWriter w, long[] arr, int k) {
         Set<Integer> set = new HashSet<>();
         for (long num : arr) {
@@ -33,7 +33,7 @@ public class C1 implements Runnable {
 
     public static void main(String[] args) throws Exception
     {
-        new Thread(null, new C1(), "Main", 1 << 27).start();
+        new Thread(null, new Adding_Powers_1312C(), "Main", 1 << 27).start();
     }
 
     @Override

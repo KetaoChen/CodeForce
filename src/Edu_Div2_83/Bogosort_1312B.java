@@ -1,17 +1,29 @@
 package Edu_Div2_83;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 
-public class A1 implements Runnable {
-    private static void getRes(PrintWriter w) {
-
+public class Bogosort_1312B implements Runnable {
+    private static void getRes(PrintWriter w, int[] arr) {
+        Arrays.sort(arr);
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            int temp = arr[left];
+            arr[left++] = arr[right];
+            arr[right--] = temp;
+        }
+        for (int num : arr) {
+            w.print(num + " ");
+        }
+        w.println();
     }
 
     public static void main(String[] args) throws Exception
     {
-        new Thread(null, new A1(), "Main", 1 << 27).start();
+        new Thread(null, new Bogosort_1312B(), "Main", 1 << 27).start();
     }
 
     @Override
@@ -20,16 +32,14 @@ public class A1 implements Runnable {
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
         for (int i = 0; i < t; i++) {
-            int a = in.nextInt();
-            int b = in.nextInt();
-            if (a % b == 0) {
-                w.println("YES");
-            } else {
-                w.println("NO");
+            int n = in.nextInt();
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
             }
+            getRes(w, arr);
         }
 
-        //getRes(w);
         w.flush();
         w.close();
     }

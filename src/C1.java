@@ -1,23 +1,58 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.HashSet;
+import java.util.InputMismatchException;
+import java.util.Set;
 
 
-public class C implements Runnable
-{
+public class C1 implements Runnable {
+    private static void getRes(PrintWriter w, long[] arr, int k) {
+        Set<Integer> set = new HashSet<>();
+        for (long num : arr) {
+            int index = 1;
+            while (num > 0) {
+                int d = (int) (num % k);
+                if (d >= 2) {
+                    w.println("NO");
+                    return;
+                }
+                if (d == 1) {
+                    if (set.contains(index)) {
+                        w.println("NO");
+                        return;
+                    }
+                    set.add(index);
+                }
+                index++;
+                num /= k;
+            }
+        }
+        w.println("YES");
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        new Thread(null, new C1(), "Main", 1 << 27).start();
+    }
+
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int t = in.nextInt();
-
+        long t = in.nextLong();
+        for (int i = 0; i < t; i++) {
+            int n = (int) in.nextLong();
+            int k = (int) in.nextLong();
+            long[] arr = new long[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextLong();
+            }
+            getRes(w, arr, k);
+        }
         w.flush();
         w.close();
     }
 
-
-    static class InputReader
-    {
+    static class InputReader {
         private InputStream stream;
         private byte[] buf = new byte[1024];
         private int curChar;
@@ -192,11 +227,6 @@ public class C implements Runnable
         {
             public boolean isSpaceChar(int ch);
         }
-    }
-
-    public static void main(String args[]) throws Exception
-    {
-        new Thread(null, new C(),"Main",1<<27).start();
     }
 
 }

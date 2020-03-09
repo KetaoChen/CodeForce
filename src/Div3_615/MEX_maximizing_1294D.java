@@ -1,3 +1,5 @@
+package Div3_615;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;

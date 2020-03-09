@@ -1,18 +1,47 @@
+package Div2_616;
+
 import java.io.*;
 import java.util.*;
 import java.lang.*;
 
 
-public class D implements Runnable
+public class Array_Sharpening_1291B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int t = in.nextInt();
+
+        int q = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+
+        for (int i = 0; i < q; i++) {
+            int l = in.nextInt();
+            w.println(check(in, l));
+        }
 
         w.flush();
         w.close();
+    }
+
+    private static String check(InputReader in, int l) {
+        int[] arr = new int[l];
+        for (int i = 0; i < l; i++) {
+            arr[i] = in.nextInt();
+        }
+        int inc = 0;
+        for (inc = 0; inc < l; inc++) {
+            if (arr[inc] < inc) {
+                break;
+            }
+        }
+        int dec = l - 1;
+        for (dec = l - 1; dec >= 0; dec--) {
+            if (arr[dec] < (l - 1 - dec)) {
+                break;
+            }
+        }
+        //System.out.println(inc + " " + dec);
+        return inc - 1 >= dec + 1 ? "YES" : "NO";
     }
 
 
@@ -196,7 +225,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new Array_Sharpening_1291B(),"Main",1<<27).start();
     }
 
 }

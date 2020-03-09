@@ -30,9 +30,9 @@ public class Make_Good_Goodbye2019C {
             xor ^= num;
         }
 
-        //if we only use two number: "sum = A, xor = B"
-        //A + B + (A + B)
-        //B ^ B ^ (A + B) = B + A
+        //if we only use two number: "sum = Div2_622.A, xor = Div2_622.B"
+        //Div2_622.A + Div2_622.B + (Div2_622.A + Div2_622.B)
+        //Div2_622.B ^ Div2_622.B ^ (Div2_622.A + Div2_622.B) = Div2_622.B + Div2_622.A
 
         long[] res = new long[2];
         res[0] = xor;

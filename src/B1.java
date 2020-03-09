@@ -1,76 +1,27 @@
 import java.io.*;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.Map;
 
 
-public class E implements Runnable
-{
-    private static int getRes(int[] arr, Map<String, Integer> memo) {
-        // memo the res.
-        // greedy eliminate the smallest number
-        int l = arr.length;
-        if (l == 1) {
-            return 0;
+public class B1 implements Runnable {
+    private static void getRes(PrintWriter w, int[] arr) {
+        Arrays.sort(arr);
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            int temp = arr[left];
+            arr[left++] = arr[right];
+            arr[right--] = temp;
         }
-        String s = print(arr);
-        if (memo.containsKey(s)) {
-            return memo.get(s);
+        for (int num : arr) {
+            w.print(num + " ");
         }
-
-        int min = arr[0];
-        for (int i = 1; i < l; i++) {
-            min = Math.min(min, arr[i]);
-        }
-
-        int[] copy = arr.clone();
-        int len = copy.length;
-
-        for (int i = 0; i < l - 1; i++) {
-            if (arr[i] == min && arr[i] == arr[i + 1]) {
-                arr[i]++;
-                arr[i + 1] = -1;
-                l--;
-            }
-        }
-        if (l == arr.length) {
-            return 0;
-        }
-        int[] n1 = new int[l];
-        int index = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != -1) {
-                n1[index++] = arr[i];
-            }
-        }
-
-        int res = getRes(n1, memo) + arr.length - l;
-        for (int i = 0; i < len - 1; i++) {
-            if (copy[i] == min && copy[i] == copy[i + 1]) {
-                copy[i]++;
-                copy[i + 1] = -1;
-                len--;
-            }
-        }
-        int[] n2 = new int[len];
-        index = 0;
-        for (int i = 0; i < copy.length; i++) {
-            if (copy[i] != -1) {
-                n1[index++] = copy[i];
-            }
-        }
-        res = Math.max(res, getRes(n2, memo) + copy.length - len);
-        memo.put(s, res);
-        return res;
+        w.println();
     }
 
-    private static String print(int[] arr) {
-        StringBuilder sb = new StringBuilder();
-        for (int num : arr) {
-            sb.append(num);
-            sb.append(',');
-        }
-        return sb.toString();
+    public static void main(String[] args) throws Exception
+    {
+        new Thread(null, new B1(), "Main", 1 << 27).start();
     }
 
     @Override
@@ -78,13 +29,15 @@ public class E implements Runnable
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
-        int[] arr = new int[t];
         for (int i = 0; i < t; i++) {
-            arr[i] = in.nextInt();
+            int n = in.nextInt();
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            getRes(w, arr);
         }
-        Map<String, Integer> memo = new HashMap<>();
-        int res = getRes(arr, memo);
-        w.println(res);
+
         w.flush();
         w.close();
     }
@@ -264,11 +217,6 @@ public class E implements Runnable
         {
             public boolean isSpaceChar(int ch);
         }
-    }
-
-    public static void main(String args[]) throws Exception
-    {
-        new Thread(null, new E(),"Main",1<<27).start();
     }
 
 }

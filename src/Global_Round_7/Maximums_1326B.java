@@ -1,49 +1,44 @@
+package Global_Round_7;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class B implements Runnable
+public class Maximums_1326B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
-        int k = in.nextInt();
         int[] arr = new int[t];
         for (int i = 0; i < t; i++) {
             arr[i] = in.nextInt();
         }
-        getRes(arr, k, w);
+        getRes(arr, w);
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int k, PrintWriter w) {
-        int l = arr.length, bound = l - k;
-        // find the first k large numbers.
-        long res = -1, sum = 0;
-        int count = 0;
+    private static void getRes(int[] arr, PrintWriter w) {
+        int l = arr.length;
+        // int[] a = new int[l];
+        int cur = 0;
         for (int i = 0; i < l; i++) {
-            count++;
-            if (arr[i] <= bound) {
-                continue;
-            }
-            sum += arr[i];
-            if (res == -1) {
-                res = 1;
+            cur = Math.max(cur, cur + arr[i]);
+            if (arr[i] < 0) {
+                w.print(cur + arr[i] + " ");
             }
             else {
-                res = res * count % p;
+                w.print(cur + " ");
             }
-            count = 0;
         }
-        w.println(sum + " " + res);
+
     }
 
 
     // the base is n. The prime mod is mod.
-    final static int p =(int) 998244353;
+    final static int p =(int) (1e9 + 7);
     public static long[] getInvArray(int n) {
         long[] inv = new long[n + 1];
         inv[1] = 1;
@@ -234,7 +229,7 @@ public class B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B(),"Main",1<<27).start();
+        new Thread(null, new Maximums_1326B(),"Main",1<<27).start();
     }
 
 }

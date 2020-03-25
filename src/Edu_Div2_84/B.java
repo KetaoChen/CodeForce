@@ -1,39 +1,71 @@
+package Edu_Div2_84;
+
 import java.io.*;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
-public class A implements Runnable
+public class B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
+
         for (int i = 0; i < t; i++) {
-            int num = in.nextInt();
-            getRes(num, w);
+            int n = in.nextInt();
+            Queue<Integer>[] lists = new LinkedList[n];
+            for (int j = 0; j < n; j++) {
+                int K = in.nextInt();
+                lists[j] = new LinkedList();
+                for (int k = 0; k < K; k++) {
+                    lists[j].offer(in.nextInt());
+                }
+            }
+            getRes(lists, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(int i, PrintWriter w) {
-        if (i == 1) {
-            w.println(-1);
-            return;
+    private static void getRes(Queue<Integer>[] qs, PrintWriter w) {
+        int n = qs.length;
+        boolean[] have = new boolean[n + 1];
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            Queue<Integer> q = qs[i];
+            while (!q.isEmpty() && have[q.peek()]) {
+                q.poll();
+            }
+            if (q.isEmpty()) {
+                res = i + 1;
+            }
+            else {
+                have[q.poll()] = true;
+            }
+
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(2);
-        for (int k = 0; k < i - 1; k++) {
-            sb.append(3);
+        if (res == 0) {
+            w.println("OPTIMAL");
         }
-        w.println(sb.toString());
+        else {
+            for (int i = 1; i <= n; i++) {
+                if (!have[i]) {
+                    w.println("IMPROVE");
+                    w.println(res + " " + i);
+                    return;
+                }
+            }
+        }
+
     }
 
 
     // the base is n. The prime mod is mod.
-    final static int p =(int) (1e9 + 7);
+    final static int p =(int) 998244353;
     public static long[] getInvArray(int n) {
         long[] inv = new long[n + 1];
         inv[1] = 1;
@@ -224,7 +256,7 @@ public class A implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A(),"Main",1<<27).start();
+        new Thread(null, new B(),"Main",1<<27).start();
     }
 
 }

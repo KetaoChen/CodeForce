@@ -1,19 +1,35 @@
+package Edu_Div2_84;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class Maximum_White_Subtree implements Runnable
+public class A implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
-        
+        for (int i = 0; i < t; i++) {
+            int num = in.nextInt();
+            int k = in.nextInt();
+            getRes(num, k, w);
+        }
+
         w.flush();
         w.close();
     }
 
+    private static void getRes(int i, int k, PrintWriter w) {
+        long min = (long) k * k;
+        String res = "No";
+        if (i >= min && ((i % 2) == (k % 2))) {
+            res = "Yes";
+        }
+
+        w.println(res);
+    }
 
 
     // the base is n. The prime mod is mod.
@@ -208,7 +224,7 @@ public class Maximum_White_Subtree implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Maximum_White_Subtree(),"Main",1<<27).start();
+        new Thread(null, new A(),"Main",1<<27).start();
     }
 
 }

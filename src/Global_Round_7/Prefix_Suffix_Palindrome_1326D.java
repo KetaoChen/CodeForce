@@ -1,8 +1,10 @@
+package Global_Round_7;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class D implements Runnable
+public class Prefix_Suffix_Palindrome_1326D implements Runnable
 {
     @Override
     public void run() {
@@ -277,7 +279,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new Prefix_Suffix_Palindrome_1326D(),"Main",1<<27).start();
     }
 
 }

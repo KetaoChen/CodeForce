@@ -1,43 +1,52 @@
-package Edu_Div2_83;
+package Global_Round_7;
 
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class Count_the_Arrays_1312D implements Runnable {
-    final static int mod = 998244353;
-
-    private static void getRes(PrintWriter w, int n, int m) {
-        if (n == 2) {
-            w.println(0);
-            return;
+public class Permutation_Partitions_1326C implements Runnable
+{
+    @Override
+    public void run() {
+        InputReader in = new InputReader(System.in);
+        PrintWriter w = new PrintWriter(System.out);
+        int t = in.nextInt();
+        int k = in.nextInt();
+        int[] arr = new int[t];
+        for (int i = 0; i < t; i++) {
+            arr[i] = in.nextInt();
         }
-        // res = Div2_622.Edu_Div2_84.C(m, n-1) * (n - 2)
-        long com = combo(n - 1, m);
-        //System.out.println("value of combo is: " + com);
-
-        long res = 0;
-        long cur = 1;
-        long[] inv = getInvArray(n - 2);
-        for (int i = 1; i < n - 1; i++) {
-            cur = ((cur * (n - 1 - i)) % mod) * inv[i] % mod;
-            //System.out.println(cur);
-            res = (res + cur * i % mod) % mod;
-        }
-        w.println((res * com % mod));
+        getRes(arr, k, w);
+        w.flush();
+        w.close();
     }
 
-    private static long combo(int n, int m) {
-        long[] inv = getInvArray(n);
-        long res = 1;
-        for (int i = 0; i < n; i++) {
-            res = ((res * (m - i) % mod) * inv[i + 1]) % mod;
+    private static void getRes(int[] arr, int k, PrintWriter w) {
+        int l = arr.length, bound = l - k;
+        // find the first k large numbers.
+        long res = -1, sum = 0;
+        int count = 0;
+        for (int i = 0; i < l; i++) {
+            count++;
+            if (arr[i] <= bound) {
+                continue;
+            }
+            sum += arr[i];
+            if (res == -1) {
+                res = 1;
+            }
+            else {
+                res = res * count % p;
+            }
+            count = 0;
         }
-        return res % mod;
+        w.println(sum + " " + res);
     }
 
+
+    // the base is n. The prime mod is mod.
+    final static int p =(int) 998244353;
     public static long[] getInvArray(int n) {
-        int p = mod;
         long[] inv = new long[n + 1];
         inv[1] = 1;
         for (int i = 2; i <= n; i++) {
@@ -46,23 +55,9 @@ public class Count_the_Arrays_1312D implements Runnable {
         return inv;
     }
 
-    public static void main(String[] args) throws Exception
+
+    static class InputReader
     {
-        new Thread(null, new Count_the_Arrays_1312D(), "Main", 1 << 27).start();
-    }
-
-    @Override
-    public void run() {
-        InputReader in = new InputReader(System.in);
-        PrintWriter w = new PrintWriter(System.out);
-        int n = in.nextInt();
-        int m = in.nextInt();
-        getRes(w, n, m);
-        w.flush();
-        w.close();
-    }
-
-    static class InputReader {
         private InputStream stream;
         private byte[] buf = new byte[1024];
         private int curChar;
@@ -237,6 +232,11 @@ public class Count_the_Arrays_1312D implements Runnable {
         {
             public boolean isSpaceChar(int ch);
         }
+    }
+
+    public static void main(String args[]) throws Exception
+    {
+        new Thread(null, new Permutation_Partitions_1326C(),"Main",1<<27).start();
     }
 
 }

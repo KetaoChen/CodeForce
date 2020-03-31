@@ -45,7 +45,7 @@ public class Time_to_Run_1301D implements Runnable
                     w.println(1 + " U");
                     if (k > 0) {
                         k--;
-                        w.println(1 + " Div2_622.D");
+                        w.println(1 + " Div2_622.Div2_630.D");
                     }
                 }
 
@@ -59,7 +59,7 @@ public class Time_to_Run_1301D implements Runnable
                 if (i != m && k > 0) {
                     i++;
                     k--;
-                    w.println(1 + " Div2_622.D");
+                    w.println(1 + " Div2_622.Div2_630.D");
                 }
                 else if (i == m && k > 0) {
                     w.println(k + " U");
@@ -70,7 +70,7 @@ public class Time_to_Run_1301D implements Runnable
         else {
             while (k > 0) {
                 int step = Math.min(m, k);
-                w.println(step + " Div2_622.D");
+                w.println(step + " Div2_622.Div2_630.D");
                 k -= step;
 
                 if (j > 0 && k > 0) {

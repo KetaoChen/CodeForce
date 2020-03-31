@@ -10,9 +10,20 @@ public class Main implements Runnable
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
-
+        getRes(t, w);
         w.flush();
         w.close();
+    }
+
+    private static void getRes(int k, PrintWriter w) {
+        int add = (1 << 17);
+        int upFirst = add + k;
+        int upSecond = k;
+        int botFirst = add;
+        int botSecond = add + k;
+        w.println(2 + " " + 3);
+        w.println(upFirst + " " + upSecond + " " + 0);
+        w.println(botFirst + " " + botSecond + " " + k);
     }
 
 

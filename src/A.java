@@ -2,16 +2,38 @@ import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class A implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int a = in.nextInt();
+            int b = in.nextInt();
+            getRes(a, b, w);
+        }
 
         w.flush();
         w.close();
+    }
+
+    private static void getRes(int a, int b, PrintWriter w) {
+
+        for (int i = 0; i < a - 1; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < b; j++) {
+                sb.append('B');
+            }
+            w.println(sb.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < b - 1; j++) {
+            sb.append('W');
+        }
+        sb.append('B');
+        w.println(sb.toString());
     }
 
 
@@ -208,7 +230,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new A(),"Main",1<<27).start();
     }
 
 }

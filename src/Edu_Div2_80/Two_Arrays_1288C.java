@@ -18,7 +18,7 @@ public class Two_Arrays_1288C {
 
         // after we combine the number of two arrays, it is still a non-descending array
         // our problem becomes that we need to get 2m numbers from n numbers, which can have repetition.
-        // res = Div2_622.Edu_Div2_84.Div2_630.C(n + 2m - 1, 2m)
+        // res = Div2_622.Edu_Div2_84.Div2_630.Div2_632.C(n + 2m - 1, 2m)
         long[] inv = getInvArray(2 * m);
         long res = 1;
         for (int i = 1; i <= 2 * m; i++) {

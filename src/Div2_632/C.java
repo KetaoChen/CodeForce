@@ -1,67 +1,47 @@
+package Div2_632;
+
 import java.io.*;
-import java.util.InputMismatchException;
+import java.util.*;
 
 
-public class B implements Runnable
+public class C implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int t = in.nextInt();
+        int[] arr = new int[t];
         for (int i = 0; i < t; i++) {
-            int n = in.nextInt();
-            int[] a = new int[n];
-            for (int j = 0; j < n; j++) {
-                a[j] =in.nextInt();
-            }
-            int[] b = new int[n];
-            for (int j = 0; j < n; j++) {
-                b[j] = in.nextInt();
-            }
-            getRes(a, b, w);
+            arr[i] = in.nextInt();
         }
+        w.println(getRes(arr));
+
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] a, int[] b, PrintWriter w) {
-        if (a[0] != b[0]) {
-            w.println("NO");
-            return;
-        }
-        int l = a.length;
-        if (l == 1) {
-            w.println("YES");
-            return;
-        }
+    private static long getRes(int[] arr) {
+        long res = 0;
+        Map<Long, Integer> map = new HashMap<>();
+        map.put(0L, 0);
 
-        boolean havePos = false;
-        boolean haveNeg = false;
+        int l = arr.length, last = 0;
+        long sum = 0;
         for (int i = 0; i < l; i++) {
-            if (a[i] == b[i]) {
-                havePos |= a[i] == 1;
-                haveNeg |= a[i] == -1;
-                continue;
-            }
-            if (b[i] == 0 && (a[i] == 1 && !haveNeg || a[i] == -1 && !havePos)) {
-                w.println("NO");
-                return;
-            }
-            if (b[i] > a[i] && !havePos) {
-                w.println("NO");
-                return;
-            }
-            if (b[i] < a[i] && !haveNeg) {
-                w.println("NO");
-                return;
-            }
-            havePos |= a[i] == 1;
-            haveNeg |= a[i] == -1;
-        }
-        w.println("YES");
+            sum += arr[i];
 
+            if (map.containsKey(sum) && map.get(sum) >= last) {
+                last = map.get(sum) + 1;
+            }
+//            System.out.println("i: " + i + " last: " + last);
+//            System.out.println(i - last + 1);
+            res += i - last + 1;
+            map.put(sum, i + 1);
+        }
+        return res;
     }
+
 
 
     // the base is n. The prime mod is mod.
@@ -256,7 +236,7 @@ public class B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B(),"Main",1<<27).start();
+        new Thread(null, new C(),"Main",1<<27).start();
     }
 
 }

@@ -12,7 +12,7 @@ public class Count_the_Arrays_1312D implements Runnable {
             w.println(0);
             return;
         }
-        // res = Div2_622.Edu_Div2_84.Div2_630.C(m, n-1) * (n - 2)
+        // res = Div2_622.Edu_Div2_84.Div2_630.Div2_632.C(m, n-1) * (n - 2)
         long com = combo(n - 1, m);
         //System.out.println("value of combo is: " + com);
 

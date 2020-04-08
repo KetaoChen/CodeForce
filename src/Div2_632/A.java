@@ -1,3 +1,5 @@
+package Div2_632;
+
 import java.io.*;
 import java.util.InputMismatchException;
 

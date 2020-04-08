@@ -1,103 +1,69 @@
+package Div2_632;
+
 import java.io.*;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 
 
-public class D implements Runnable
+public class B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        String[] strs = in.nextLine().split(" ");
-        int n = Integer.parseInt(strs[0]), k = Integer.parseInt(strs[1]);
-        String s = in.nextLine();
-        getRes(s, k, w);
-
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            int[] a = new int[n];
+            for (int j = 0; j < n; j++) {
+                a[j] =in.nextInt();
+            }
+            int[] b = new int[n];
+            for (int j = 0; j < n; j++) {
+                b[j] = in.nextInt();
+            }
+            getRes(a, b, w);
+        }
         w.flush();
         w.close();
     }
 
-    private static void getRes(String s, int k, PrintWriter w) {
-        int l = s.length();
-        int[] arr = new int[l];
-        int max = 0, first = 0;
-        for (int i = 0; i < l; i++) {
-            arr[i] = s.charAt(i) == 'R' ? 1 : 0;
-            if (arr[i] == 0) {
-                max += i - first++;
-            }
+    private static void getRes(int[] a, int[] b, PrintWriter w) {
+        if (a[0] != b[0]) {
+            w.println("NO");
+            return;
         }
-
-        List<List<Integer>> list = calMin(arr);
-        int min = list.size();
-        // System.out.println(min + " " + max);
-        if (k < min || k > max) {
-            w.println(-1);
+        int l = a.length;
+        if (l == 1) {
+            w.println("YES");
             return;
         }
 
-//        for (List<Integer> lis : list) {
-//            for (int num : lis) {
-//                System.out.print(num + " ");
-//            }
-//            System.out.println();
-//        }
-
-        // System.out.println("This is the end of print");
-
-        int row = 0, col = 0;
-        while (max > k) {
-            int len = list.get(row).size();
-            int count = Math.min(len - col, max - k + 1);
-            max -= count;
-            k--;
-            w.print(count+ " ");
-            for (int i = 0; i < count; i++, col++) {
-                w.print(list.get(row).get(col) + " ");
+        boolean havePos = false;
+        boolean haveNeg = false;
+        for (int i = 0; i < l; i++) {
+            if (a[i] == b[i]) {
+                havePos |= a[i] == 1;
+                haveNeg |= a[i] == -1;
+                continue;
             }
-            w.println();
-            if (col == len) {
-                row++;
-                col = 0;
+            if (b[i] == 0 && (a[i] == 1 && !haveNeg || a[i] == -1 && !havePos)) {
+                w.println("NO");
+                return;
             }
+            if (b[i] > a[i] && !havePos) {
+                w.println("NO");
+                return;
+            }
+            if (b[i] < a[i] && !haveNeg) {
+                w.println("NO");
+                return;
+            }
+            havePos |= a[i] == 1;
+            haveNeg |= a[i] == -1;
         }
-
-        for (; row < list.size();) {
-            int len = list.get(row).size();
-            for (; col < len; col++) {
-                w.println(1 + " " + list.get(row).get(col));
-            }
-            if (col == len) {
-                row++;
-                col = 0;
-            }
-        }
+        w.println("YES");
 
     }
-
-    private static List<List<Integer>> calMin(int[] arr) {
-        List<List<Integer>> res = new ArrayList<>();
-        int l = arr.length;
-        while (true) {
-            List<Integer> temp = new ArrayList<>();
-            for (int i = 0; i < l - 1; i++) {
-                if (arr[i] == 1 && arr[i + 1] == 0) {
-                    arr[i] = 0;
-                    arr[i + 1] = 1;
-                    i++;
-                    temp.add(i);
-                }
-            }
-            if (temp.size() == 0) {
-                break;
-            }
-            res.add(temp);
-        }
-        return res;
-    }
-
 
 
     // the base is n. The prime mod is mod.
@@ -292,7 +258,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new B(),"Main",1<<27).start();
     }
 
 }

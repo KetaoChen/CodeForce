@@ -1,78 +1,83 @@
+package Div2_633;
+
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 
-public class Main implements Runnable
+public class D_Graph implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int N = in.nextInt();
-        for (int i = 0; i < N; i++) {
-            int n = in.nextInt();
-            Integer[] arr = new Integer[n];
-            for (int j = 0; j < n; j++) {
-                arr[j] = in.nextInt();
-            }
-            getRes(arr, w);
+        List<Integer>[] arr = new List[N + 1];
+        int[] d = new int[N + 1];
+        for (int i = 0; i <= N; i++) {
+            arr[i] = new ArrayList<>();
         }
-
+        for (int i = 1; i < N; i++) {
+            int f = in.nextInt(), s = in.nextInt();
+            arr[f].add(s);
+            arr[s].add(f);
+            d[f]++;
+            d[s]++;
+        }
+        getRes(arr, d, N, w);
         w.flush();
         w.close();
     }
 
-    static final int mod = (int) 1e9;
 
-    private static void getRes(Integer[] arr, PrintWriter w) {
-
-        long max = arr[0];
-        int res = 0;
-        for (int num : arr) {
-            if (num >= max) {
-                max = num;
-                continue;
+    private static void getRes(List<Integer>[] graph, int[] d, int l, PrintWriter w) {
+        int[] leaf = new int[l + 1];
+        for (int i = 1; i <= l; i++) {
+            for (int next : graph[i]) {
+                if (d[next] == 1) leaf[i]++;
             }
-            long diff = max - num;
-            long sum = 0;
-            while (diff > 0) {
-                long add = lowbit(diff);
-                sum += add;
-                diff -= add;
-            }
-            int count = 0;
-            max = Math.max(max, num + sum);
-            while (sum > 0) {
-                sum >>= 1;
-                count++;
-            }
-
-            res = Math.max(res, count);
-
+        }
+        int max = l - 1;
+        for (int i = 1; i <= l; i++) {
+            max -= Math.max(0, leaf[i] - 1);
         }
 
-        w.println(res);
-
-
-    }
-
-    private static long lowbit(long x) {
-        return x & -x;
-    }
-
-    private static int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
-    }
-
-    public  static long[] getInvArray(long n, int p){
-        long[] inv = new long[(int)n + 1];
-        inv[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            inv[i] = ((p - p / i) * inv[p % i] % p + p) % p;
+        int[] path = new int[l + 1];
+        Queue<Integer> q = new LinkedList<>();
+        int start = 0;
+        for (int i = 1; i <= l; i++) {
+            if (d[i] == 1) {
+                start = i;
+                break;
+            }
         }
-        return inv;
+        int dis = 0;
+
+        q.offer(start);
+        while (!q.isEmpty()) {
+            int s = q.size();
+            for (int i = 0; i < s; i++) {
+                int cur = q.poll();
+                path[cur] = dis;
+                for (int next : graph[cur]) {
+                    if (next == start || path[next] != 0) continue;
+                    q.offer(next);
+                }
+            }
+            dis++;
+        }
+
+        int min = 1;
+        for (int i = 1; i <= l; i++) {
+            // System.out.println(path[i] + " ");
+            if (d[i] == 1 && path[i] % 2 == 1) {
+                min = 3;
+                break;
+            }
+        }
+        w.println(min + " " + max);
     }
+
+
 
     static class InputReader
     {
@@ -254,7 +259,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D_Graph(),"Main",1<<27).start();
     }
 
 }

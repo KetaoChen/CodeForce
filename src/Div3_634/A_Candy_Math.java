@@ -1,43 +1,67 @@
+package Div3_634;
+
 import java.io.*;
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
 
 
-public class C implements Runnable
+public class A_Candy_Math implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
         int N = in.nextInt();
-
         for (int i = 0; i < N; i++) {
             int n = in.nextInt();
-            Integer[] arr = new Integer[n];
-            for (int j = 0; j < n; j++) {
-                arr[j] = in.nextInt();
+            int a = in.nextInt();
+            int b = in.nextInt();
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < b; j++) {
+                sb.append((char) ('a' + j));
             }
-            getRes(arr, w);
+            StringBuilder res = new StringBuilder();
+            while (res.length() < n) {
+                res.append(sb);
+            }
+            w.println(res.toString().substring(0, n));
         }
 
         w.flush();
         w.close();
     }
 
+    static final int mod = (int) 1e9;
 
     private static void getRes(Integer[] arr, PrintWriter w) {
 
-        Map<Integer, Integer> map = new HashMap<>();
-        int max = 0;
+        long max = arr[0];
+        int res = 0;
         for (int num : arr) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
-            max = Math.max(max, map.get(num));
+            if (num >= max) {
+                max = num;
+                continue;
+            }
+            long diff = max - num;
+            long sum = 0;
+            while (diff > 0) {
+                long add = lowbit(diff);
+                sum += add;
+                diff -= add;
+            }
+            int count = 0;
+            max = Math.max(max, num + sum);
+            while (sum > 0) {
+                sum >>= 1;
+                count++;
+            }
+
+            res = Math.max(res, count);
+
         }
 
-        int s = map.size(), res = Math.min(max, s);
-        if (s == max) res--;
         w.println(res);
+
+
     }
 
     private static long lowbit(long x) {
@@ -237,7 +261,7 @@ public class C implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new C(),"Main",1<<27).start();
+        new Thread(null, new A_Candy_Math(),"Main",1<<27).start();
     }
 
 }

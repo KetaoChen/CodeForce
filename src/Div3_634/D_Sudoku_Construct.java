@@ -1,59 +1,55 @@
+package Div3_634;
+
 import java.io.*;
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Set;
 
 
-public class B implements Runnable
+public class D_Sudoku_Construct implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int N = in.nextInt();
+        int N = Integer.parseInt(in.nextLine());
         for (int i = 0; i < N; i++) {
-            int n = in.nextInt();
-            Integer[] arr = new Integer[n];
-            for (int j = 0; j < n; j++) {
-                arr[j] = in.nextInt();
+            String[] sudo = new String[9];
+            for (int j = 0; j < 9; j++) {
+                sudo[j] = in.nextLine();
             }
-            getRes(arr, w);
+            getRes(sudo, w);
         }
 
         w.flush();
         w.close();
     }
 
-    static final int mod = (int) 1e9;
-
-    private static void getRes(Integer[] arr, PrintWriter w) {
-
-        long max = arr[0];
-        int res = 0;
-        for (int num : arr) {
-            if (num >= max) {
-                max = num;
-                continue;
-            }
-            long diff = max - num;
-            long sum = 0;
-            while (diff > 0) {
-                long add = lowbit(diff);
-                sum += add;
-                diff -= add;
-            }
-            int count = 0;
-            max = Math.max(max, num + sum);
-            while (sum > 0) {
-                sum >>= 1;
-                count++;
-            }
-
-            res = Math.max(res, count);
-
+    private static void getRes(String[] arr, PrintWriter w) {
+        // we change (0, 0), (3, 1), (6, 2)
+        //           (1, 3), (4, 4), (7, 5)
+        //           (2, 6), (5, 7), (8, 8)
+        int[] change = {0, 3, 6, 1, 4, 7, 2, 5, 8};
+        for (int i = 0; i < 9; i++) {
+            StringBuilder sb = new StringBuilder(arr[i]);
+            sb.setCharAt(change[i], find(arr, i, change[i]));
+            w.println(sb.toString());
         }
 
-        w.println(res);
+    }
 
-
+    private static char find(String[] arr, int row, int col) {
+        Set<Character> set = new HashSet<>();
+        String s = arr[row];
+        for (int i = 0; i < 9; i++) {
+            if (i / 3 == col / 3) continue;
+            set.add(s.charAt(i));
+        }
+        for (int i = 0; i < 9; i++) {
+            if (i / 3 == row / 3) continue;
+            if (set.contains(arr[i].charAt(col))) return arr[i].charAt(col);
+        }
+        return ' ';
     }
 
     private static long lowbit(long x) {
@@ -253,7 +249,7 @@ public class B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B(),"Main",1<<27).start();
+        new Thread(null, new D_Sudoku_Construct(),"Main",1<<27).start();
     }
 
 }

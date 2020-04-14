@@ -1,53 +1,45 @@
+package Div3_634;
+
 import java.io.*;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Set;
+import java.util.Map;
 
 
-public class D implements Runnable
+public class C_HashMap_Count implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int N = Integer.parseInt(in.nextLine());
+        int N = in.nextInt();
+
         for (int i = 0; i < N; i++) {
-            String[] sudo = new String[9];
-            for (int j = 0; j < 9; j++) {
-                sudo[j] = in.nextLine();
+            int n = in.nextInt();
+            Integer[] arr = new Integer[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
             }
-            getRes(sudo, w);
+            getRes(arr, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(String[] arr, PrintWriter w) {
-        // we change (0, 0), (3, 1), (6, 2)
-        //           (1, 3), (4, 4), (7, 5)
-        //           (2, 6), (5, 7), (8, 8)
-        int[] change = {0, 3, 6, 1, 4, 7, 2, 5, 8};
-        for (int i = 0; i < 9; i++) {
-            StringBuilder sb = new StringBuilder(arr[i]);
-            sb.setCharAt(change[i], find(arr, i, change[i]));
-            w.println(sb.toString());
+
+    private static void getRes(Integer[] arr, PrintWriter w) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            max = Math.max(max, map.get(num));
         }
 
-    }
-
-    private static char find(String[] arr, int row, int col) {
-        Set<Character> set = new HashSet<>();
-        String s = arr[row];
-        for (int i = 0; i < 9; i++) {
-            if (i / 3 == col / 3) continue;
-            set.add(s.charAt(i));
-        }
-        for (int i = 0; i < 9; i++) {
-            if (i / 3 == row / 3) continue;
-            if (set.contains(arr[i].charAt(col))) return arr[i].charAt(col);
-        }
-        return ' ';
+        int s = map.size(), res = Math.min(max, s);
+        if (s == max) res--;
+        w.println(res);
     }
 
     private static long lowbit(long x) {
@@ -247,7 +239,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new C_HashMap_Count(),"Main",1<<27).start();
     }
 
 }

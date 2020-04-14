@@ -1,8 +1,10 @@
+package Div3_634;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class A implements Runnable
+public class B_Construct_RotateString implements Runnable
 {
     @Override
     public void run() {
@@ -11,17 +13,11 @@ public class A implements Runnable
         int N = in.nextInt();
         for (int i = 0; i < N; i++) {
             int n = in.nextInt();
-            int a = in.nextInt();
-            int b = in.nextInt();
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < b; j++) {
-                sb.append((char) ('a' + j));
+            Integer[] arr = new Integer[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
             }
-            StringBuilder res = new StringBuilder();
-            while (res.length() < n) {
-                res.append(sb);
-            }
-            w.println(res.toString().substring(0, n));
+            getRes(arr, w);
         }
 
         w.flush();
@@ -259,7 +255,7 @@ public class A implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A(),"Main",1<<27).start();
+        new Thread(null, new B_Construct_RotateString(),"Main",1<<27).start();
     }
 
 }

@@ -1,10 +1,12 @@
+package Div3_634;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
 
-public class E implements Runnable
+public class E_Palin_Memo_Count implements Runnable
 {
     @Override
     public void run() {
@@ -267,7 +269,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new E_Palin_Memo_Count(),"Main",1<<27).start();
     }
 
 }

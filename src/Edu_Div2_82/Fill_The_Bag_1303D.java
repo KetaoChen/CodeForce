@@ -1,57 +1,71 @@
-package Unsolved;
+package Edu_Div2_82;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
+import java.util.*;
+import java.lang.*;
 
 
-public class Infinite_Prefixes_1295B implements Runnable
+public class Fill_The_Bag_1303D implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        //int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        String s = in.nextLine();
-        int t = Integer.parseInt(s);
+        long q = in.nextLong(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        for (int i = 0; i < q; i++) {
+            long n = in.nextLong();
+            long m = in.nextLong();
 
-        for (int i = 0; i < t; i++) {
-            s = in.nextLine();
-            //System.out.println("this is the first line" + s);
-            String[] str = s.split(" ");
-            //System.out.println(str.length);
-            s = in.nextLine();
-            //System.out.println(s);
-            int res = getRes(Integer.parseInt(str[0]), Integer.parseInt(str[1]), s);
-
-            w.println(res);
+            //System.out.println(n + " " + m);
+            Long[] arr = new Long[(int)m];
+            for (int k = 0; k < m; k++) {
+                arr[k] = in.nextLong();
+            }
+            w.println(getRes(n, arr));
         }
         w.flush();
         w.close();
     }
 
-    private static int getRes(int n, int x, String s) {
-        int res = 0;
-        s = s + s;
-        //asking how many substrings have sum = 0;
-        int[] prefix = new int[2 * s.length() + 1];
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
-        for (int i = 0; i < s.length(); i++) {
-            prefix[i + 1] = s.charAt(i) == '0' ? prefix[i] + 1 : prefix[i] - 1;
-            map.put(prefix[i + 1], map.getOrDefault(prefix[i + 1], 0) + 1);
+    private static int getRes(long n, Long[] arr) {
+        long sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
         }
 
-        for (int i :map.keySet()) {
-            res = Math.max(res, map.get(i));
+        if (sum < n) {
+            return -1;
         }
 
-        if (prefix[s.length()] == 0) {
-            return map.containsKey(x) ? -1 : 0;
+        boolean[] require = new boolean[64];
+        int index = 0;
+        while (n > 0) {
+            require[index++] = (n & 1) == 1;
+            n >>= 1;
         }
 
-        return (long)x * prefix[s.length()] < 0 ? map.containsKey(x) ? res : 0 : res;
+        Arrays.sort(arr);
+        int res = 0, j = 0, l = arr.length;
+        long rest = 0;
+        for (int i = 0; i < 64; i++) {
+            if (!require[i]) continue;
+
+            while (j < l && arr[j] <= (1 << i)) rest += arr[j++];
+            if (rest >= (1 << i)) rest -= (1 << i);
+            else {
+
+                long next = arr[j];
+                int bit = 0;
+                while (next > 0) {
+                    bit++;
+                    next >>= 1;
+                }
+                // System.out.println(arr[j] + " " + bit + " " + i);
+                res += bit - i - 1;
+                rest += arr[j++] - (1 << i);
+            }
+        }
+        return res;
     }
 
 
@@ -235,7 +249,7 @@ public class Infinite_Prefixes_1295B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Infinite_Prefixes_1295B(),"Main",1<<27).start();
+        new Thread(null, new Fill_The_Bag_1303D(),"Main",1<<27).start();
     }
 
 }

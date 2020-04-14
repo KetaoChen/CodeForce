@@ -1,101 +1,52 @@
-package Unsolved;
+package Div2_613;
 
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Fill_The_Bag_1303D implements Runnable
+public class Infinite_Prefixes_1295B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        long q = in.nextLong(); // Scanner has functions to read ints, longs, strings, chars, etc.
-        for (int i = 0; i < q; i++) {
-            long n = in.nextLong();
-            long m = in.nextLong();
+        //int t = in.nextInt(); // Scanner has functions to read ints, longs, strings, chars, etc.
+        String s = in.nextLine();
+        int t = Integer.parseInt(s);
 
-            //System.out.println(n + " " + m);
-            long[] arr = new long[(int)m];
-            for (int k = 0; k < m; k++) {
-                arr[k] = in.nextLong();
-            }
+        for (int i = 0; i < t; i++) {
+            s = in.nextLine();
+            //System.out.println("this is the first line" + s);
+            String[] str = s.split(" ");
+            //System.out.println(str.length);
+            s = in.nextLine();
+            //System.out.println(s);
+            int res = getRes(Integer.parseInt(str[0]), Integer.parseInt(str[1]), s);
 
-
-            w.println(getRes(n, arr));
+            w.println(res);
         }
         w.flush();
         w.close();
     }
 
-    private static int getRes(long n, long[] arr) {
-        long sum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            sum += arr[i];
+    private static int getRes(int n, int x, String s) {
+        int res = 0, l = s.length();
+        int[] prefix = new int[l + 1];
+        for (int i = 0; i < s.length(); i++) {
+            prefix[i + 1] = s.charAt(i) == '0' ? prefix[i] + 1 : prefix[i] - 1;
         }
-        if (sum < n) {
-            return -1;
-        }
-
-        long temp = n;
-        sum = 0;
-        for (long num : arr) {
-            for (int i = 0; i < 60; i++) {
-                if (((temp >> i) & 1) == 1 && ((sum >> i) & 1) == 1) {
-                    temp = (temp ^ (1 << i));
-                    sum = (sum ^ (1 << i));
-                }
+        if (prefix[l] == 0)  {
+            for (int i = 0; i <= l; i++) {
+                if (prefix[i] == x) return -1;
             }
-            if ((temp & num) == 1) {
-                temp = (temp ^ num);
-            }
-            else {
-                sum += num;
-            }
-        }
-        //System.out.println(temp + " " + sum);
-        for (int i = 0; i < 60; i++) {
-            //System.out.println(i + " " + ((temp >> i) & 1));
-            //System.out.println(i + " " + ((sum >> i) & 1));
-            if (((temp >> i) & 1) == 1 && ((sum >> i) & 1) == 1) {
-                temp = (temp ^ (1 << i));
-                sum = (sum ^ (1 << i));
-            }
+            return 0;
         }
 
-        //System.out.println(temp + " " + sum);
-        int res = 0, index = 0;
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] used = new boolean[60];
-        while (sum > 0) {
-            if ((sum & 1) == 1) {
-                q.offer(index);
-                used[index] = true;
-            }
-            index++;
-            sum >>= 1;
+        if (x == 0) res++;
+        for (int i = 1; i <= l; i++) {
+            int diff = x - prefix[i];
+            if (diff % prefix[l] == 0 && diff / prefix[l] >= 0) res++;
         }
-
-        while (!q.isEmpty()) {
-            int s = q.size();
-            for (int i = 0; i < s; i++) {
-                int cur = q.poll();
-                //System.out.println(res + " " + cur);
-                if (((temp >> cur) & 1) == 1) {
-                    temp = (temp ^ (1 << cur));
-                }
-                if (cur > 0 && !used[cur - 1]) {
-                    q.offer(cur - 1);
-                    used[cur - 1] = true;
-                }
-            }
-            if (temp == 0) {
-                return res;
-            }
-            res++;
-        }
-        //System.out.println(temp);
         return res;
     }
 
@@ -280,7 +231,7 @@ public class Fill_The_Bag_1303D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Fill_The_Bag_1303D(),"Main",1<<27).start();
+        new Thread(null, new Infinite_Prefixes_1295B(),"Main",1<<27).start();
     }
 
 }

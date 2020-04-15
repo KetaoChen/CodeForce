@@ -11,68 +11,60 @@ public class Main implements Runnable
         PrintWriter w = new PrintWriter(System.out);
         int N = in.nextInt();
         for (int i = 0; i < N; i++) {
-            int n = in.nextInt();
-            Integer[] arr = new Integer[n];
-            for (int j = 0; j < n; j++) {
-                arr[j] = in.nextInt();
-            }
-            getRes(arr, w);
+            getRes(in.nextLong(), w);
         }
+//        Set<Integer> set = new HashSet<>();
+//        int index = 1;
+//        for (int i = 1; i <= 512; i++) {
+//            if (set.contains(i)) continue;
+//            set.add(i);
+//            StringBuilder sb = new StringBuilder(Integer.toBinaryString(i));
+//            for (int j = i + 1; j <= 1024; j++) {
+//                if (!set.contains(j) && !set.contains(i ^ j) && (i ^ j) > j) {
+//                    set.add(j);
+//                    set.add(i ^ j);
+//                    sb.append("," + Integer.toBinaryString(j) + "," + Integer.toBinaryString(i ^ j));
+//                    // System.out.println(index + " " + i + " " + j + " " + (i ^ j));
+//                    break;
+//                }
+//            }
+//            System.out.println(index++ + " " + sb.toString());
+//            // System.out.println();
+//        }
 
         w.flush();
         w.close();
     }
 
-    static final int mod = (int) 1e9;
+    private static void getRes(long i, PrintWriter w) {
+        int[] ini = {1, 2, 3};
+        int[][] increment = {{0, 1, 2, 3}, {0, 2, 3, 1}, {0, 3, 1, 2}};
+        // find the i th number in this four-sides tree.
+        long n = (i - 1) / 3 + 1;
+        // System.out.println("this is: " + n);
+        int col = (int) ((i - 1) % 3);
 
-    private static void getRes(Integer[] arr, PrintWriter w) {
+        long cur = 1;
+        while (n > cur) {
+            n -= cur;
+            cur *= 4;
+        }
 
-        long max = arr[0];
-        int res = 0;
-        for (int num : arr) {
-            if (num >= max) {
-                max = num;
-                continue;
-            }
-            long diff = max - num;
-            long sum = 0;
-            while (diff > 0) {
-                long add = lowbit(diff);
-                sum += add;
-                diff -= add;
-            }
-            int count = 0;
-            max = Math.max(max, num + sum);
-            while (sum > 0) {
-                sum >>= 1;
-                count++;
-            }
-
-            res = Math.max(res, count);
-
+        Stack<Integer> stack = new Stack<>();
+        n--;
+        while (cur > 1) {
+            stack.push(increment[col][(int)(n % 4)]);
+            n /= 4;
+            cur /= 4;
+        }
+        long res = ini[col];
+        while (!stack.isEmpty()) {
+            res = res * 4 + stack.pop();
         }
 
         w.println(res);
-
-
     }
 
-    private static long lowbit(long x) {
-        return x & -x;
-    }
-
-    private static int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
-    }
-
-    public  static long[] getInvArray(long n, int p){
-        long[] inv = new long[(int)n + 1];
-        inv[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            inv[i] = ((p - p / i) * inv[p % i] % p + p) % p;
-        }
-        return inv;
-    }
 
     static class InputReader
     {

@@ -1,43 +1,46 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class B implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-
-        int left = 0, right = 1000000;
-        while (left < right) {
-            int mid = (right - left + 1) / 2 + left;
-            System.out.println(mid);
-            System.out.flush();
-            String res = in.nextLine();
-            if (res.length() == 1) {
-                right = mid - 1;
+        int N = (int) in.nextLong();
+        for (int i = 0; i < N; i++) {
+            int n = (int) in.nextLong();
+            long[] a = new long[n];
+            long[] b = new long[n];
+            for (int j = 0; j < n; j++) {
+                a[j] = in.nextLong();
+                b[j] = in.nextLong();
             }
-            else {
-                left = mid;
-            }
+            getRes(a, b, w);
         }
-
-        w.println("! " + left);
-//        int N = in.nextInt();
-//        for (int i = 0; i < N; i++) {
-//            getRes(in.nextLong(), w);
-//        }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(long i, PrintWriter w) {
+    private static void getRes(long[] a, long[] b, PrintWriter w) {
+        // find the min index
 
+        int l = a.length;
+        long min = Math.min(a[0], b[l - 1]);
+        for (int i = 0; i < l - 1; i++) {
+            if (Math.min(b[i], a[i + 1]) < min) {
+                min = Math.min(b[i], a[i + 1]);
+            }
+        }
 
-        w.println();
+        long res = Math.max(0, a[0] - b[l - 1]);
+        for (int i = 1; i < l; i++) {
+            res += Math.max(0, a[i] - b[i - 1]);
+        }
+        res += min;
+        w.println(res);
     }
 
 
@@ -57,9 +60,8 @@ public class Main implements Runnable
 
         public int read()
         {
-            if (numChars==-1) {
+            if (numChars==-1)
                 throw new InputMismatchException();
-            }
 
             if (curChar >= numChars)
             {
@@ -73,9 +75,8 @@ public class Main implements Runnable
                     throw new InputMismatchException();
                 }
 
-                if(numChars <= 0) {
+                if(numChars <= 0)
                     return -1;
-                }
             }
             return buf[curChar++];
         }
@@ -97,9 +98,8 @@ public class Main implements Runnable
         {
             int c = read();
 
-            while(isSpaceChar(c)) {
+            while(isSpaceChar(c))
                 c = read();
-            }
 
             int sgn = 1;
 
@@ -112,9 +112,8 @@ public class Main implements Runnable
             int res = 0;
             do
             {
-                if(c<'0'||c>'9') {
+                if(c<'0'||c>'9')
                     throw new InputMismatchException();
-                }
                 res *= 10;
                 res += c - '0';
                 c = read();
@@ -127,9 +126,8 @@ public class Main implements Runnable
         public long nextLong()
         {
             int c = read();
-            while (isSpaceChar(c)) {
+            while (isSpaceChar(c))
                 c = read();
-            }
             int sgn = 1;
             if (c == '-')
             {
@@ -140,9 +138,8 @@ public class Main implements Runnable
 
             do
             {
-                if (c < '0' || c > '9') {
+                if (c < '0' || c > '9')
                     throw new InputMismatchException();
-                }
                 res *= 10;
                 res += c - '0';
                 c = read();
@@ -154,9 +151,8 @@ public class Main implements Runnable
         public double nextDouble()
         {
             int c = read();
-            while (isSpaceChar(c)) {
+            while (isSpaceChar(c))
                 c = read();
-            }
             int sgn = 1;
             if (c == '-')
             {
@@ -166,12 +162,10 @@ public class Main implements Runnable
             double res = 0;
             while (!isSpaceChar(c) && c != '.')
             {
-                if (c == 'e' || c == 'E') {
+                if (c == 'e' || c == 'E')
                     return res * Math.pow(10, nextInt());
-                }
-                if (c < '0' || c > '9') {
+                if (c < '0' || c > '9')
                     throw new InputMismatchException();
-                }
                 res *= 10;
                 res += c - '0';
                 c = read();
@@ -182,12 +176,10 @@ public class Main implements Runnable
                 double m = 1;
                 while (!isSpaceChar(c))
                 {
-                    if (c == 'e' || c == 'E') {
+                    if (c == 'e' || c == 'E')
                         return res * Math.pow(10, nextInt());
-                    }
-                    if (c < '0' || c > '9') {
+                    if (c < '0' || c > '9')
                         throw new InputMismatchException();
-                    }
                     m /= 10;
                     res += (c - '0') * m;
                     c = read();
@@ -199,9 +191,8 @@ public class Main implements Runnable
         public String readString()
         {
             int c = read();
-            while (isSpaceChar(c)) {
+            while (isSpaceChar(c))
                 c = read();
-            }
             StringBuilder res = new StringBuilder();
             do
             {
@@ -215,9 +206,8 @@ public class Main implements Runnable
 
         public boolean isSpaceChar(int c)
         {
-            if (filter != null) {
+            if (filter != null)
                 return filter.isSpaceChar(c);
-            }
             return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
         }
 
@@ -234,7 +224,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new B(),"Main",1<<27).start();
     }
 
 }

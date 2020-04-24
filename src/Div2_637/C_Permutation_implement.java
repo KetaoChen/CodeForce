@@ -1,8 +1,10 @@
+package Div2_637;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class A implements Runnable
+public class C_Permutation_implement implements Runnable
 {
     @Override
     public void run() {
@@ -11,29 +13,41 @@ public class A implements Runnable
         int N = in.nextInt();
         for (int i = 0; i < N; i++) {
             int n = in.nextInt();
-            int a = in.nextInt();
-            int b = in.nextInt();
-            int c = in.nextInt();
-            int d = in.nextInt();
-            getRes(n, a, b, c, d, w);
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            getRes(arr, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(int n, int a, int b, int c, int d, PrintWriter w) {
-        boolean small = false, large = false;
-        for (int k = a - b; k <= a + b; k++) {
-            if (n * k >= c - d) {
-                large = true;
-            }
-            if (n * k <= c + d) {
-                small = true;
-            }
+    private static void getRes(int[] a,  PrintWriter w) {
+        int l = a.length;
+        int end = l - 1;
+        int num = 1;
+        int[] map = new int[l + 1];
+        for (int i = 1; i <= l; i++) {
+            map[a[i - 1]] = i - 1;
         }
 
-        w.println(small && large ? "Yes" : "No");
+        while (num <= l) {
+            int temp = map[num];
+            int start = map[num];
+            while (start < end) {
+                if (a[start] + 1 != a[start + 1]) {
+                    w.println("No");
+                    return;
+                }
+                start++;
+                num++;
+            }
+            num++;
+            end = temp - 1;
+        }
+        w.println("Yes");
     }
 
 
@@ -217,7 +231,7 @@ public class A implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A(),"Main",1<<27).start();
+        new Thread(null, new C_Permutation_implement(),"Main",1<<27).start();
     }
 
 }

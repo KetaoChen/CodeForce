@@ -1,8 +1,10 @@
+package Div2_637;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class B implements Runnable
+public class B_Array_mountain implements Runnable
 {
     @Override
     public void run() {
@@ -233,7 +235,7 @@ public class B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B(),"Main",1<<27).start();
+        new Thread(null, new B_Array_mountain(),"Main",1<<27).start();
     }
 
 }

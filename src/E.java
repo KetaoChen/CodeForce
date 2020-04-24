@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 
@@ -8,39 +9,46 @@ public class E implements Runnable
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        String s = in.nextLine();
-        String t = in.nextLine();
-        getRes(s, t, w);
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int[] arr = new int[m];
+        for (int i = 0; i < m; i++) {
+            arr[i] = in.nextInt();
+        }
+        int g = in.nextInt(), r = in.nextInt();
+        getRes(arr, n, g, r, w);
 
         w.flush();
         w.close();
     }
 
     final static int mod = 998244353;
-    private static void getRes(String s, String t, PrintWriter w) {
-        int ls = s.length(), lt = t.length();
-        long res = 0;
-        long[][] dp = new long[ls + 1][lt + 1];
-        dp[0][0] = 1;
-        for (int i = 1; i <= ls; i++) {
-            dp[i][0] = dp[i - 1][0] * 2 % mod;
-        }
-
-        for (int j = lt; j > 0; j--) {
-            for (int i = 1; i <= ls; i++) {
-                dp[i][j] = dp[i - 1][j];
-                if (s.charAt(i - 1) == t.charAt(j)) {
-                    dp[i][j] = (dp[i][j]);
-                }
-            }
-        }
-
-
-
-
-
-
+    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+        int l = arr.length;
+        long[][] dp = new long[l][g + 1];
+        long res = helper(arr, 0, g, g, r, dp);
         w.println(res);
+    }
+
+    private static long helper(int[] a, int index, int t, int g, int r, long[][] dp) {
+        int l = a.length;
+        if (index == l) return 0;
+        if (dp[index][t] != 0) {
+            return dp[index][t];
+        }
+        int add = 0;
+        if (t == 0) {
+            add = g;
+            t = g;
+        }
+
+        long res = Long.MAX_VALUE;
+        for (int i = index; i >= 0 && a[index] - a[i] <= t; i--) {
+            res = Math.min(res, helper(a, i, t - a[index] - a[i], g, r, dp) + add);
+        }
+
+        dp[index][t] = -1;
+        return dp[index][t];
     }
 
 

@@ -10,17 +10,30 @@ public class A implements Runnable
         PrintWriter w = new PrintWriter(System.out);
         int N = in.nextInt();
         for (int i = 0; i < N; i++) {
-            getRes(in.nextLong(), w);
+            int n = in.nextInt();
+            int a = in.nextInt();
+            int b = in.nextInt();
+            int c = in.nextInt();
+            int d = in.nextInt();
+            getRes(n, a, b, c, d, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(long i, PrintWriter w) {
+    private static void getRes(int n, int a, int b, int c, int d, PrintWriter w) {
+        boolean small = false, large = false;
+        for (int k = a - b; k <= a + b; k++) {
+            if (n * k >= c - d) {
+                large = true;
+            }
+            if (n * k <= c + d) {
+                small = true;
+            }
+        }
 
-
-        w.println();
+        w.println(small && large ? "Yes" : "No");
     }
 
 

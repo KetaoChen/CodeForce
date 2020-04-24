@@ -8,39 +8,48 @@ public class B implements Runnable
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int N = (int) in.nextLong();
-        for (int i = 0; i < N; i++) {
-            int n = (int) in.nextLong();
-            long[] a = new long[n];
-            long[] b = new long[n];
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            int k = in.nextInt();
+            int[] arr = new int[n];
             for (int j = 0; j < n; j++) {
-                a[j] = in.nextLong();
-                b[j] = in.nextLong();
+                arr[j] = in.nextInt();
             }
-            getRes(a, b, w);
+            getRes(arr, k, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(long[] a, long[] b, PrintWriter w) {
+    private static void getRes(int[] a, int k, PrintWriter w) {
         // find the min index
-
         int l = a.length;
-        long min = Math.min(a[0], b[l - 1]);
-        for (int i = 0; i < l - 1; i++) {
-            if (Math.min(b[i], a[i + 1]) < min) {
-                min = Math.min(b[i], a[i + 1]);
+        int[] c = new int[l];
+        for (int i = 1; i < l - 1; i++) {
+            if (a[i] > a[i - 1] && a[i] > a[i + 1]) {
+                c[i] = 1;
             }
         }
 
-        long res = Math.max(0, a[0] - b[l - 1]);
-        for (int i = 1; i < l; i++) {
-            res += Math.max(0, a[i] - b[i - 1]);
+        int max = 0, res = 0, count = 0;
+        int left = 0, right = 0;
+        while (right < l) {
+            count += c[right];
+            if (right - left > k - 1) {
+                count -= c[left++];
+            }
+            int temp = count;
+            if (c[right] == 1) temp--;
+            if (c[left] == 1) temp--;
+            if (right - left == k - 1 && temp > max) {
+                max = temp;
+                res = left;
+            }
+            right++;
         }
-        res += min;
-        w.println(res);
+        w.println((max + 1) + " " + (res + 1));
     }
 
 

@@ -10,17 +10,42 @@ public class C implements Runnable
         PrintWriter w = new PrintWriter(System.out);
         int N = in.nextInt();
         for (int i = 0; i < N; i++) {
-            getRes(in.nextLong(), w);
+            int n = in.nextInt();
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            getRes(arr, w);
         }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(long i, PrintWriter w) {
+    private static void getRes(int[] a,  PrintWriter w) {
+        int l = a.length;
+        int end = l - 1;
+        int num = 1;
+        int[] map = new int[l + 1];
+        for (int i = 1; i <= l; i++) {
+            map[a[i - 1]] = i - 1;
+        }
 
-
-        w.println();
+        while (num <= l) {
+            int temp = map[num];
+            int start = map[num];
+            while (start < end) {
+                if (a[start] + 1 != a[start + 1]) {
+                    w.println("No");
+                    return;
+                }
+                start++;
+                num++;
+            }
+            num++;
+            end = temp - 1;
+        }
+        w.println("Yes");
     }
 
 

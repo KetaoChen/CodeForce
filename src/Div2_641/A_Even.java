@@ -1,18 +1,44 @@
+package Div2_641;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class A_Even implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        int t = in.nextInt();
+
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            int k = in.nextInt();
+            w.println(getRes(n, k));
+        }
+
 
         w.flush();
         w.close();
     }
+
+    private static int getRes(int n, int k) {
+        n += helper(n);
+        k --;
+        n += 2 * k;
+        return n;
+    }
+
+    private static int helper(int n) {
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) {
+                return i;
+            }
+        }
+        return n;
+    }
+
 
 
     static class InputReader
@@ -195,7 +221,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new A_Even(),"Main",1<<27).start();
     }
 
 }

@@ -1,18 +1,65 @@
+package Div2_641;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Map;
 
 
-public class Main implements Runnable
+public class C_Number_GCD implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        int n = in.nextInt();
+
+        // for (int i = 0; i < t; i++) {
+        // int n = in.nextInt();
+        int[] arr = new int[n];
+        for (int j = 0; j < n; j++) {
+            arr[j] = in.nextInt();
+        }
+        w.println(getRes(arr));
+        // }
+
 
         w.flush();
         w.close();
     }
+
+    private static long getRes(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            for (int i = 1; i * i <= num; i++) {
+                if (i * i == num) {
+                    map.put(i, map.getOrDefault(i, 0) + 1);
+                    continue;
+                }
+                if (num % i == 0) {
+                    map.put(i, map.getOrDefault(i, 0) + 1);
+                    map.put(num / i, map.getOrDefault(num / i, 0) + 1);
+                }
+            }
+        }
+
+        long res = 1;
+        for (int key : map.keySet()) {
+            if (map.get(key) >= arr.length - 1) {
+                long gcd = gcd(res, (long) key);
+                res = res * key / gcd;
+            }
+        }
+        return res;
+    }
+
+    // [2,6,9,12] ==> [6,18,24,18,12,36]
+    private static long gcd(long x, long y) {
+        return y == 0 ? x : gcd(y, x % y);
+    }
+
+
+
 
 
     static class InputReader
@@ -195,7 +242,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new C_Number_GCD(),"Main",1<<27).start();
     }
 
 }

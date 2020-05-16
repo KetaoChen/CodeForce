@@ -1,19 +1,56 @@
+package Div2_641;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class D_Constructive implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        int t = in.nextInt();
+
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            int k = in.nextInt();
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            w.println(getRes(arr, k));
+        }
 
         w.flush();
         w.close();
     }
 
+    private static String getRes(int[] arr, int k) {
+        // k = 3
+        // 1. the adjacent element to k. [1,3,2] k can not be the largest.
+        // 2. a larger range [1,2,1,1,1,1,1,3,1,3,1,3]
+        boolean has = false;
+        for (int num : arr) {
+            if (num == k) has = true;
+        }
+        if (!has) return "no";
+        if (arr.length == 1) return "yes";
+
+        int last = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] >= k) {
+                if (last == -1) {
+                    last = i;
+                }
+                else {
+                    if (i - last <= 2) return "yes";
+                    last = i;
+                }
+            }
+        }
+        return "no";
+    }
 
     static class InputReader
     {
@@ -195,7 +232,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D_Constructive(),"Main",1<<27).start();
     }
 
 }

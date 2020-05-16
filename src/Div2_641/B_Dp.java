@@ -1,18 +1,56 @@
+package Div2_641;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class B_Dp implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        int t = in.nextInt();
+
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            int[] arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            w.println(getRes(arr));
+        }
+
 
         w.flush();
         w.close();
     }
+
+    private static int getRes(int[] arr) {
+        int l = arr.length;
+        int[] dp = new int[l + 1];
+        dp[1] = 1;
+        for (int i = 2; i <= l; i++) {
+            dp[i] = 1;
+            for (int k = 1; k * k <= i; k++) {
+                if (i % k == 0) {
+                    if (arr[i - 1] > arr[k - 1]) {
+                        dp[i] = Math.max(dp[i], dp[k] + 1);
+                    }
+                    if (arr[i - 1] > arr[i / k - 1]) {
+                        dp[i] = Math.max(dp[i], dp[i / k] + 1);
+                    }
+                }
+            }
+        }
+
+        int res = 0;
+        for (int i = l; i >= 1; i--) {
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
 
 
     static class InputReader
@@ -195,7 +233,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new B_Dp(),"Main",1<<27).start();
     }
 
 }

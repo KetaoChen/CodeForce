@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class E implements Runnable
@@ -22,36 +24,23 @@ public class E implements Runnable
         w.close();
     }
 
-    final static int mod = 998244353;
     private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
         int l = arr.length;
-        long[][] dp = new long[l][g + 1];
-        long res = helper(arr, 0, g, g, r, dp);
+        boolean[] visited = new boolean[l];
+        visited[0] = true;
+
+        int[] st = new int[l];
+        st[0] = 1;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(0);
+        int res = 0;
+        while (!q.isEmpty()) {
+
+        }
+
+
         w.println(res);
     }
-
-    private static long helper(int[] a, int index, int t, int g, int r, long[][] dp) {
-        int l = a.length;
-        if (index == l) return 0;
-        if (dp[index][t] != 0) {
-            return dp[index][t];
-        }
-        int add = 0;
-        if (t == 0) {
-            add = g;
-            t = g;
-        }
-
-        long res = Long.MAX_VALUE;
-        for (int i = index; i >= 0 && a[index] - a[i] <= t; i--) {
-            res = Math.min(res, helper(a, i, t - a[index] - a[i], g, r, dp) + add);
-        }
-
-        dp[index][t] = -1;
-        return dp[index][t];
-    }
-
-
 
     static class InputReader
     {

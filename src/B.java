@@ -1,7 +1,5 @@
 import java.io.*;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class B implements Runnable
@@ -12,11 +10,13 @@ public class B implements Runnable
         PrintWriter w = new PrintWriter(System.out);
 
 
-
         w.flush();
         w.close();
     }
 
+    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+
+    }
 
     static class InputReader
     {

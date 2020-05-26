@@ -1,22 +1,39 @@
+package Div2_645;
+
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 
-public class D implements Runnable
+public class B_Greedy_Sort implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
 
-
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt();
+            Integer[] arr = new Integer[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            w.println(getRes(arr));
+        }
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
-
+    private static int getRes(Integer[] arr) {
+        int n = arr.length;
+        Arrays.sort(arr);
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr[i] <= i + 1) return i + 2;
+        }
+        return 1;
     }
+
 
     static class InputReader
     {
@@ -198,7 +215,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new B_Greedy_Sort(),"Main",1<<27).start();
     }
 
 }

@@ -1,7 +1,5 @@
 import java.io.*;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class A implements Runnable
@@ -16,6 +14,9 @@ public class A implements Runnable
         w.close();
     }
 
+    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+
+    }
 
     static class InputReader
     {

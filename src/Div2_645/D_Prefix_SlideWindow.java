@@ -1,22 +1,53 @@
+package Div2_645;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class D implements Runnable
+public class D_Prefix_SlideWindow implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
 
-
+        long n = in.nextLong(), x = in.nextLong();
+        long[] arr = new long[(int)n * 2];
+        for (int i = 0; i < n; i++) {
+            arr[i] = in.nextLong();
+            arr[i + (int)n] = arr[i];
+        }
+        w.println(getRes(arr, x));
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+    private static long getRes(long[] arr, long x) {
+        long res = 0;
+        int left = 0, right = 0;
+        int[] used = new int[arr.length];
 
+        long count = 0;
+        long num = 0;
+        while (right < arr.length) {
+            long cur = arr[right++];
+            count += cur * (cur + 1) / 2;
+            num += cur;
+            while (num > x) {
+                long minus = num - x;
+                long min = Math.min(arr[left] - used[left], minus);
+                used[left] += min;
+                num -= min;
+                count -= (used[left] + used[left] - min + 1) * min / 2;
+                if (num > x) {
+                    left++;
+                }
+            }
+            res = Math.max(res, count);
+        }
+        return res;
     }
+
 
     static class InputReader
     {
@@ -198,7 +229,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new D_Prefix_SlideWindow(),"Main",1<<27).start();
     }
 
 }

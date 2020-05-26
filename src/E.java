@@ -11,35 +11,14 @@ public class E implements Runnable
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        int n = in.nextInt();
-        int m = in.nextInt();
-        int[] arr = new int[m];
-        for (int i = 0; i < m; i++) {
-            arr[i] = in.nextInt();
-        }
-        int g = in.nextInt(), r = in.nextInt();
-        getRes(arr, n, g, r, w);
+
 
         w.flush();
         w.close();
     }
 
     private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
-        int l = arr.length;
-        boolean[] visited = new boolean[l];
-        visited[0] = true;
 
-        int[] st = new int[l];
-        st[0] = 1;
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(0);
-        int res = 0;
-        while (!q.isEmpty()) {
-
-        }
-
-
-        w.println(res);
     }
 
     static class InputReader

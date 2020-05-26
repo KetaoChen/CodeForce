@@ -1,22 +1,26 @@
+package Div2_645;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class D implements Runnable
+public class A_Easy implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int a = in.nextInt();
+            int b = in.nextInt();
+            w.println((a * b + 1) / 2);
+        }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
-
-    }
 
     static class InputReader
     {
@@ -198,7 +202,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new A_Easy(),"Main",1<<27).start();
     }
 
 }

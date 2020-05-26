@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.*;
+import java.util.InputMismatchException;
 
 
 public class C implements Runnable
@@ -10,14 +10,13 @@ public class C implements Runnable
         PrintWriter w = new PrintWriter(System.out);
 
 
-
-
         w.flush();
         w.close();
-
     }
 
+    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
 
+    }
 
     static class InputReader
     {

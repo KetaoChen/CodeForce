@@ -1,24 +1,48 @@
+package Div2_646;
+
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
-public class E implements Runnable
+public class B_Dp_Sequence implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-
+        int t = Integer.parseInt(in.nextLine());
+        for (int i = 0; i < t; i++) {
+            String s = in.nextLine();
+            w.println(getRes(s));
+        }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+    private static int getRes(String s) {
+        int l = s.length();
+        int[][][] dp = new int[l + 1][2][2];
+        for (int i = 0; i <= l; i++) {
+            for (int j = 0; j < 2; j++) {
+                for (int k = 0; k < 2; k++) {
+                    dp[i][j][k] = 10000;
+                }
+            }
+        }
 
+        dp[0][0][0] = 0;
+        dp[0][1][0] = 0;
+        // dp[i] last digit, dp[][j]: can change or not, 0 : can, 1 : cannot
+        for (int i = 1; i <= l; i++) {
+            int val = s.charAt(i - 1) - '0';
+            dp[i][val][0] = dp[i - 1][val][0];
+            dp[i][val][1] = Math.min(dp[i - 1][1 - val][0], dp[i - 1][val][1]);
+            dp[i][1 - val][0] = dp[i - 1][1 - val][0] + 1;
+            dp[i][1 - val][1] = Math.min(dp[i - 1][val][0], dp[i - 1][1 - val][1]) + 1;
+        }
+
+        return Math.min(dp[l][0][0], Math.min(dp[l][0][1], Math.min(dp[l][1][0], dp[l][1][1])));
     }
 
     static class InputReader
@@ -201,7 +225,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new B_Dp_Sequence(),"Main",1<<27).start();
     }
 
 }

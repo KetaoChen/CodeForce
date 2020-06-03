@@ -1,21 +1,80 @@
+package Div2_646;
+
 import java.io.*;
-import java.util.InputMismatchException;
+import java.util.*;
 
 
-public class B implements Runnable
+public class E_Graph_PostOrder implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        N = in.nextInt();
+        nodes = new Node[N + 1];
+        visited = new boolean[N + 1];
+        int diff = 0;
+        for (int i = 1; i <= N; i++) {
+            nodes[i] = new Node(in.nextInt(), in.nextInt(), in.nextInt());
+            diff += nodes[i].b - nodes[i].c;
+        }
+        graph = new List[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 1; i < N; i++) {
+            int a = in.nextInt(), b = in.nextInt();
+            graph[a].add(b);
+            graph[b].add(a);
+        }
 
+        if (diff != 0) w.println(-1);
+        else {
+            long[] res = getRes(1, nodes[1].a);
+            w.println(res[0]);
+        }
 
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
+    static int N;
+    static Node[] nodes;
+    static List<Integer>[] graph;
+    static boolean[] visited;
 
+    // long[] 0: cost, 1: 0 needed, 2: 1 needed.
+    private static long[] getRes(int root, int cost) {
+        long[] res = new long[3];
+        visited[root] = true;
+        if (nodes[root].b != nodes[root].c) {
+            res[nodes[root].c + 1]++;
+        }
+
+        for (int next : graph[root]) {
+            if (visited[next]) continue;
+            long[] n = getRes(next, Math.min(cost, nodes[next].a));
+            res[0] += n[0];
+            res[1] += n[1];
+            res[2] += n[2];
+        }
+
+        res[0] += Math.min(res[1], res[2]) * 2 * cost;
+        long min = Math.min(res[1], res[2]);
+        res[1] -= min;
+        res[2] -= min;
+        // System.out.println(root + " " + res[0] + " " + res[1] + " " + res[2]);
+        return res;
+    }
+
+    static class Node
+    {
+        int a, b, c;
+        public Node(int i, int j, int k) {
+            a = i;
+            b = j;
+            c = k;
+        }
     }
 
     static class InputReader
@@ -198,7 +257,7 @@ public class B implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B(),"Main",1<<27).start();
+        new Thread(null, new E_Graph_PostOrder(),"Main",1<<27).start();
     }
 
 }

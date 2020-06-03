@@ -1,14 +1,33 @@
+package Div2_646;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class A implements Runnable
+public class C_Graph_Odd_Even_CornerCase implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt(), x = in.nextInt();
+            int count = 0;
+            for (int j = 0; j < n - 1; j++) {
+                int a = in.nextInt(), b = in.nextInt();
+                if (a == x || b == x) count++;
+            }
 
+            if (count == 1 || n == 1) {
+                w.println("Ayush");
+                continue;
+            }
+            if (n % 2 == 0) {
+                w.println("Ayush");
+            }
+            else w.println("Ashish");
+        }
 
         w.flush();
         w.close();
@@ -198,7 +217,7 @@ public class A implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new A(),"Main",1<<27).start();
+        new Thread(null, new C_Graph_Odd_Even_CornerCase(),"Main",1<<27).start();
     }
 
 }

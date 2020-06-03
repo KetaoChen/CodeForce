@@ -1,14 +1,30 @@
+package Div2_646;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class C implements Runnable
+public class A_Odd_Even_CornerCase implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-
+        int t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = in.nextInt(), x = in.nextInt();
+            int odd = 0, even = 0;
+            for (int j = 0; j < n; j++) {
+                int num = in.nextInt();
+                if (num % 2 == 0) even++;
+                else odd++;
+            }
+            // System.out.println(odd + " " + even + " " + n + " " + x);
+            if (odd == 0 || (even == 0 && x % 2 == 0) || (x == n && odd % 2 == 0)) {
+                w.println("No");
+            }
+            else w.println("Yes");
+        }
 
         w.flush();
         w.close();
@@ -198,7 +214,7 @@ public class C implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new C(),"Main",1<<27).start();
+        new Thread(null, new A_Odd_Even_CornerCase(),"Main",1<<27).start();
     }
 
 }

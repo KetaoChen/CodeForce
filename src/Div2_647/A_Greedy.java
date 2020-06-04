@@ -1,27 +1,42 @@
+package Div2_647;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class A_Greedy implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-
-        w.println(getRes());
+        t = (int) in.nextLong();
+        for (int i = 0; i < t; i++) {
+            a = in.nextLong();
+            b = in.nextLong();
+            w.println(getRes());
+        }
         w.flush();
         w.close();
     }
 
-    static int t, n;
+    static int t;
+    static long a, b;
     static int[] arr;
-    private static int getRes() {
-
-        return 0;
+    private static long getRes() {
+        long max = Math.max(a, b);
+        long min = Math.min(a, b);
+        if (max % min != 0) return -1;
+        long d = max / min;
+        if ((d & (d - 1)) != 0) return -1;
+        int h = 0;
+        while (d > 1) {
+            d >>= 1;
+            h++;
+        }
+        // System.out.println(d + " " + h);
+        return h % 3 == 0 ? h / 3 : h / 3 + 1;
     }
-
 
     static class InputReader
     {
@@ -203,7 +218,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new A_Greedy(),"Main",1<<27).start();
     }
 
 }

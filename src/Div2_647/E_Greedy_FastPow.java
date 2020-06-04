@@ -1,27 +1,70 @@
+package Div2_647;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.Arrays;
+import java.util.InputMismatchException;
+import java.util.TreeMap;
 
 
-public class Main implements Runnable
+public class E_Greedy_FastPow implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            p = in.nextInt();
+            arr = new Integer[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            w.println(getRes());
+        }
 
-        w.println(getRes());
         w.flush();
         w.close();
     }
 
-    static int t, n;
-    static int[] arr;
-    private static int getRes() {
+    static int t, n, p;
+    static Integer[] arr;
+    static int mod = (int) 1e9 + 7;
+    private static long getRes() {
+        Arrays.sort(arr);
+        long res = 1;
+        int last = arr[arr.length - 1];
+        boolean over = false;
 
-        return 0;
+        for (int i = arr.length - 2; i >= 0; i--) {
+            int key = arr[i];
+            if (isOver(res, last - key)) {
+                over = true;
+            }
+
+            res = res * pow(p, last - key) % mod;
+            if (over) {
+                res -= 1;
+            }
+            else {
+                if (res >= 1) res -= 1;
+                else res = 1;
+            }
+            last = key;
+        }
+
+        res = res * pow(p, last) % mod;
+        return (res + mod) % mod;
     }
 
+    private static boolean isOver(long res, int power) {
+        return res * Math.pow(1.0 * p, power) > 1e6;
+    }
+
+    private static long pow(long base, long power) {
+        if (power == 0) return 1;
+        return power % 2 == 0 ? pow(base * base % mod, power / 2) : base * (pow(base, power - 1)) % mod;
+    }
 
     static class InputReader
     {
@@ -203,7 +246,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new E_Greedy_FastPow(),"Main",1<<27).start();
     }
 
 }

@@ -1,21 +1,54 @@
+package Div2_647;
+
 import java.io.*;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 
 
-public class D implements Runnable
+public class C_Dp_BitManipulation implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+//        for (int i = 1; i <= 258; i++) {
+//            System.out.print(i + " " + Integer.toBinaryString(i) + " ");
+//            System.out.println(Integer.bitCount(i | (i - 1)) - Integer.bitCount(i & (i - 1)));
+//        }
+        map = new HashMap<>();
+        long sum = 0;
+        for (int d = 0; d <= 63; d++) {
+            sum = sum * 2 + 1;
+            map.put(d, sum);
+        }
 
-
+        t = (int) in.nextLong();
+        for (int i = 0; i < t; i++) {
+            n = in.nextLong();
+            w.println(getRes());
+        }
         w.flush();
         w.close();
     }
 
-    private static void getRes(int[] arr, int n, int g, int r, PrintWriter w) {
-
+    static int t;
+    static long n;
+    static Map<Integer, Long> map;
+    static int[] arr;
+    // whether can find one digit, that after exclusive or, the res are in the set
+    private static long getRes() {
+        int d = 0;
+        long res = 0;
+        while (n > 0) {
+            long val = n & 1;
+            if (val == 1) {
+                res += map.get(d);
+            }
+            d++;
+            n >>= 1;
+        }
+        return res;
     }
 
     static class InputReader
@@ -198,7 +231,7 @@ public class D implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new D(),"Main",1<<27).start();
+        new Thread(null, new C_Dp_BitManipulation(),"Main",1<<27).start();
     }
 
 }

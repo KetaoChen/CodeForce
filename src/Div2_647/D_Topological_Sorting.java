@@ -1,27 +1,101 @@
+package Div2_647;
+
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 
-public class Main implements Runnable
+public class D_Topological_Sorting implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        n = in.nextInt();
+        m = in.nextInt();
+        graph = new List[n + 1];
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < m; i++) {
+            int a = in.nextInt(), b = in.nextInt();
+            graph[a].add(b);
+            graph[b].add(a);
+        }
 
-        w.println(getRes());
+        level = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int l = in.nextInt();
+            level[i] = l;
+        }
+
+        List<Integer> list = getRes();
+        if (list.size() == 0) w.println(-1);
+        else {
+            for (int num : list) {
+                w.print(num + " ");
+            }
+        }
         w.flush();
         w.close();
     }
 
-    static int t, n;
-    static int[] arr;
-    private static int getRes() {
+    static int n, m;
+    static List<Integer>[] graph;
+    static int[] level;
+    private static List<Integer> getRes() {
+        if (!bipart()) return new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+        Set<Integer>[] sets = new HashSet[n + 1];
+        for (int i = 1; i <= n; i++) {
+            sets[i] = new HashSet<>();
+        }
+        boolean[] visited = new boolean[n + 1];
+        for (int i = 1; i <= n; i++) {
+            if (level[i] == 1) {
+                q.offer(i);
+                visited[i] = true;
+            }
+        }
 
-        return 0;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            res.add(cur);
+            for (int next : graph[cur]) {
+                if (level[cur] < level[next]) {
+                    if (!sets[next].contains(level[cur])) {
+                        sets[next].add(level[cur]);
+                    }
+                }
+                if (!visited[next] && sets[next].size() == level[next] - 1) {
+                    q.offer(next);
+                    visited[next] = true;
+                }
+            }
+        }
+        return res.size() == n ? res : new ArrayList<>();
     }
 
+    private static boolean bipart() {
+        int[] visited = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            if (visited[i] != 0) continue;
+            Queue<Integer> q = new LinkedList<>();
+            q.offer(i);
+            visited[i] = 1;
+            while (!q.isEmpty()) {
+                int cur = q.poll();
+                for (int next : graph[cur]) {
+                    if (level[next] == level[cur]) return false;
+                    if (visited[next] == 0) {
+                        q.offer(next);
+                        visited[next] = 1;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     static class InputReader
     {
@@ -203,7 +277,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D_Topological_Sorting(),"Main",1<<27).start();
     }
 
 }

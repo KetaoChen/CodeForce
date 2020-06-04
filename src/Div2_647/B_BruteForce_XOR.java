@@ -1,27 +1,54 @@
+package Div2_647;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.HashSet;
+import java.util.InputMismatchException;
+import java.util.Set;
 
 
-public class Main implements Runnable
+public class B_BruteForce_XOR implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            arr = new int[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            w.println(getRes());
+        }
 
-        w.println(getRes());
         w.flush();
         w.close();
     }
 
     static int t, n;
     static int[] arr;
+    // whether can find one digit, that after exclusive or, the res are in the set
     private static int getRes() {
+//        if (arr.length == 1) return -1;
+//        if (arr.length == 2) return arr[0] ^ arr[1];
 
-        return 0;
+        Set<Integer> set = new HashSet<>();
+        for (int num : arr) set.add(num);
+        // d = 10, n = 1024,
+        for (int xor = 1; xor <= 1024; xor++) {
+            boolean have = true;
+            for (int num : arr) {
+                if (!set.contains(num ^ xor)) {
+                    have = false;
+                    break;
+                }
+            }
+            if (have) return xor;
+        }
+
+        return -1;
     }
-
 
     static class InputReader
     {
@@ -203,7 +230,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new B_BruteForce_XOR(),"Main",1<<27).start();
     }
 
 }

@@ -1,50 +1,26 @@
+package Global_Round_8;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class B_Construct_Subsequence implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
+
         w.println(getRes());
         w.flush();
         w.close();
     }
 
-    static long k;
     static int t, n;
     static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
+    private static int getRes() {
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
-                }
-            }
-        }
-
-        return "";
+        return 0;
     }
 
 
@@ -228,7 +204,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new B_Construct_Subsequence(),"Main",1<<27).start();
     }
 
 }

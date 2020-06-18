@@ -1,50 +1,53 @@
+package Global_Round_8;
+
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.Arrays;
+import java.util.InputMismatchException;
 
 
-public class Main implements Runnable
+public class D_Bit_Manipulation_And_Or_Sum implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
+        n = in.nextInt();
+        arr = new Integer[n];
+        for (int i = 0; i < n ;i++) {
+            arr[i] = in.nextInt();
+        }
         w.println(getRes());
         w.flush();
         w.close();
     }
 
-    static long k;
     static int t, n;
     static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
+    private static long getRes() {
+        long sum = 0;
+        for (int num : arr) {
+            sum += ((long) num * num);
+        }
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
+
+        for (int bit = 20; bit >= 0; bit--) {
+            Arrays.sort(arr);
+            int i = 0, j = n - 1;
+            while (i < j) {
+                while (i < j && (arr[j] >> bit & 1) == 1) j--;
+                while (i < j && (arr[i] >> bit & 1) == 0) i++;
+                if (i < j) {
+                    int x = arr[i], y = arr[j];
+                    arr[i] = x | y;
+                    arr[j] = x & y;
+                    sum += ((long)arr[j] * arr[j] + (long)arr[i] * arr[i]) - (long)x * x - (long)y * y;
+                    i++;
+                    j--;
                 }
             }
         }
 
-        return "";
+        return sum;
     }
 
 
@@ -228,7 +231,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D_Bit_Manipulation_And_Or_Sum(),"Main",1<<27).start();
     }
 
 }

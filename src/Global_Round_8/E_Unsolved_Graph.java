@@ -1,50 +1,86 @@
+package Global_Round_8;
+
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 
-public class Main implements Runnable
+public class E_Unsolved_Graph implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
-        w.println(getRes());
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            m = in.nextInt();
+            g = new List[n + 1];
+            degree = new int[n + 1];
+            st = new int[n + 1][3];
+            res = new List[2];
+            res[0] = new ArrayList<>();
+            res[1] = new ArrayList<>();
+            q = new LinkedList<>();
+            for (int j = 1; j <= n; j++) {
+                g[j] = new ArrayList<>();
+            }
+            for (int j = 0; j < m; j++) {
+                int start = in.nextInt(), end = in.nextInt();
+                g[start].add(end);
+                p[end].add(start);
+                degree[end]++;
+            }
+            getRes(w);
+        }
         w.flush();
         w.close();
     }
 
-    static long k;
-    static int t, n;
-    static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
+    static int t, n, m;
+    static List<Integer>[] g, p;
+    static int[] degree;
+    static int[][] st;
+    static List<Integer>[] res;
+    static Queue<Integer> q;
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
+    private static void getRes(PrintWriter w) {
+        // st[i][0]
+        // st: 2, there is no input. its next can also be 0.
+        // st: 0, its next must be delete.
+        // st: 1, this one has been deleted.
+
+        // st[i][1]: the number of nodes to be delete.
+        boolean[] visited = new boolean[n + 1];
+        for (int i = 1; i <= n; i++) {
+            if (degree[i] == 0) {
+                q.offer(i);
+                visited[i] = true;
+//                st[i][0] = 0;
+//                st[i][1] = 1;
+//                st[i][2] = 0;
+            }
+        }
+
+        int l = 0;
+        while (!q.isEmpty()) {
+            int s = q.size();
+            for (int i = 0; i < s; i++) {
+                int cur = q.poll();
+                for (int next : g[cur]) {
+                    degree[next]--;
+                    if (degree[next] == 0) {
+                        q.offer(next);
+                        visited[next] = true;
                     }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
                 }
             }
         }
 
-        return "";
+        w.println();
+    }
+
+    private static void dfs(int cur) {
+
     }
 
 
@@ -228,7 +264,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new E_Unsolved_Graph(),"Main",1<<27).start();
     }
 
 }

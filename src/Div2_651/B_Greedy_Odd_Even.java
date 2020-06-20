@@ -1,52 +1,42 @@
-package Global_Round_8;
+package Div2_651;
 
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class B_Construct_Subsequence implements Runnable
+public class B_Greedy_Odd_Even implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
-        PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
-        w.println(getRes());
+        w = new PrintWriter(System.out);
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            w.println(getRes(in.nextInt()));
+        }
         w.flush();
         w.close();
     }
 
-    static long k;
+
+    static PrintWriter w;
     static int t, n;
     static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
+    private static String getRes(int num) {
+        if (num == 1) return "FastestFinger";
+        if (num % 2 == 1 || num == 2) return "Ashishgup";
+        int odd = 0, even =0;
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
-                }
+        for (int i = 2; i * i <= num; i++) {
+            while (num % i == 0) {
+                num /= i;
+                if (i == 2) even++;
+                else odd++;
             }
         }
 
-        return "";
+        if (num != 1) odd++;
+        return odd == 1 && even == 1 || odd == 0? "FastestFinger" : "Ashishgup";
     }
 
 
@@ -230,7 +220,7 @@ public class B_Construct_Subsequence implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B_Construct_Subsequence(),"Main",1<<27).start();
+        new Thread(null, new B_Greedy_Odd_Even(),"Main",1<<27).start();
     }
 
 }

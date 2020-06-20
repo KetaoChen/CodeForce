@@ -1,52 +1,65 @@
-package Global_Round_8;
+package Div2_651;
 
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
-public class B_Construct_Subsequence implements Runnable
+public class D_BinarySearch_Ans_Odd_Even implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
+        n = in.nextInt();
+        k = in.nextInt();
+        arr = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = in.nextInt();
+        }
         w.println(getRes());
         w.flush();
         w.close();
     }
 
-    static long k;
-    static int t, n;
+    static int k, n;
     static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
-                }
+    private static int getRes() {
+        int left = 1, right = (int) 1e9;
+        while (left < right) {
+            int mid = left + right >> 1;
+            // System.out.println(mid);
+            if (check(mid)) {
+                right = mid;
+            }
+            else {
+                left = mid + 1;
             }
         }
+        return left;
+    }
 
-        return "";
+    // find the maximum of odd or even is <= mid
+    private static boolean check(int num) {
+        return helper(num, 0) || helper(num, 1);
+    }
+
+    private static boolean helper(int num, int mod) {
+        int index = 1, i = 0, l = arr.length, left = k;
+        while (left > 0 && i < l) {
+            // System.out.println(index + " " + arr[i] + " " + num);
+            if (index % 2 == mod) {
+                while (i < l && arr[i] > num) {
+                    i++;
+                }
+                if (i >= l) return false;
+            }
+
+            i++;
+            index++;
+            left--;
+        }
+        return left == 0;
     }
 
 
@@ -230,7 +243,7 @@ public class B_Construct_Subsequence implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new B_Construct_Subsequence(),"Main",1<<27).start();
+        new Thread(null, new D_BinarySearch_Ans_Odd_Even(),"Main",1<<27).start();
     }
 
 }

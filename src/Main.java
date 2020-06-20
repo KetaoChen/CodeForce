@@ -1,6 +1,5 @@
 import java.io.*;
-import java.util.*;
-import java.lang.*;
+import java.util.InputMismatchException;
 
 
 public class Main implements Runnable
@@ -9,44 +8,18 @@ public class Main implements Runnable
     public void run() {
         InputReader in = new InputReader(System.in);
         PrintWriter w = new PrintWriter(System.out);
-        k = in.nextLong();
-        w.println(getRes());
+
         w.flush();
         w.close();
     }
 
-    static long k;
-    static int t, n;
+    static int n;
+    static String num1, num2;
     static Integer[] arr;
-    private static String getRes() {
-        if (k == 1) return "codeforces";
 
-        String s = " codeforces";
-        long p = 1;
-        for (int base = 2; base <= 100; base++) {
-            for (int i = 1; i <= 10; i++) {
-                p = p / (base - 1) * base;
-                // System.out.println(p);
-                if (p >= k) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int a = 1; a <= i; a++) {
-                        for (int r = 1; r <= base; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    for (int a = i + 1; a <= 10; a++) {
-                        for (int r = 1; r <= base - 1; r++) {
-                            sb.append(s.charAt(a));
-                        }
-                    }
-                    return sb.toString();
-                }
-            }
-        }
+    private static void getRes() {
 
-        return "";
     }
-
 
     static class InputReader
     {

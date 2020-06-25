@@ -1,27 +1,74 @@
+package Edu_Div2_90;
+
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 
 
-public class Main implements Runnable
+public class F_Graph_Binaray_Search_Res_Greedy implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            cost = new Integer[n];
+            add = new Integer[n];
+            long s1 = 0, s2 = 0;
+            for (int j = 0; j < n; j++) {
+                int num = in.nextInt();
+                cost[j] = num;
+                s1 += cost[j];
+            }
+            for (int j = 0; j < n; j++) {
+                int num = in.nextInt();
+                add[j] = num;
+                s2 += add[j];
+            }
+            if (s1 > s2) {
+                w.println("NO");
+                continue;
+            }
+            getRes();
+        }
 
         w.flush();
         w.close();
     }
 
     static PrintWriter w;
-    static int t, k, n;
-    static Integer[] arr;
+    static int t, n;
+    static Integer[] cost, add;
 
     private static void getRes() {
+        int left = 0, right = add[0];
+        while (left <= right) {
+            int mid = left + right >> 1;
+            int val = check(mid);
+            if (val == 1) {
+                w.println("YES");
+                return;
+            }
+            if (val == 0) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+        w.println("NO");
+    }
 
+    // 1: can, -1: mid cannot, 0: first can not
+    private static int check(int first) {
+        int left = cost[0] - first;
+        first = add[0] - first;
+        for (int i = 1; i < n; i++) {
+            first = Math.min(add[i], add[i] + first - cost[i]);
+            if (first < 0) return -1;
+        }
+        return first >= left ? 1 : 0;
     }
 
     static class InputReader
@@ -204,7 +251,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new F_Graph_Binaray_Search_Res_Greedy(),"Main",1<<27).start();
     }
 
 }

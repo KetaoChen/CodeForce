@@ -1,16 +1,19 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 
 
-public class Main implements Runnable
+public class E implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            k = in.nextInt();
+            w.println(getRes());
+        }
 
         w.flush();
         w.close();
@@ -20,8 +23,58 @@ public class Main implements Runnable
     static int t, k, n;
     static Integer[] arr;
 
-    private static void getRes() {
+    private static String getRes() {
+        if (k * (k + 1) / 2 > n) return "-1";
 
+        int mid = n / (k + 1);
+        int start = mid - (k + 1) / 2;
+
+        System.out.println(mid);
+        System.out.println(mid - k / 2);
+        for (int i = 0; i <= 9; i++) {
+            if (check(start)) return convert(start);
+            start++;
+        }
+
+        return "-1";
+    }
+
+    private static boolean check(int num) {
+
+        int sum = 0;
+        String s = convert(num);
+        System.out.println(num + " " + s);
+        for (int i = 0; i <= k; i++) {
+            for (char c : s.toCharArray()) {
+                sum += c - '0';
+            }
+            s = add(s);
+        }
+
+        return sum == n;
+    }
+
+    private static String convert(int num) {
+        if (num == 0) return "0";
+        StringBuilder sb = new StringBuilder();
+        while (num >= 9) {
+            sb.append(9);
+            num -= 9;
+        }
+        if (num > 0) sb.append(num);
+        return sb.reverse().toString();
+    }
+
+    private static String add(String s) {
+        StringBuilder sb = new StringBuilder();
+        int carry = 1;
+        int i = s.length() - 1;
+        while (i >= 0 || carry > 0) {
+            int sum = i >= 0 ? s.charAt(i--) - '0' + carry : carry;
+            carry = sum / 10;
+            sb.append(sum % 10);
+        }
+        return sb.reverse().toString();
     }
 
     static class InputReader
@@ -204,7 +257,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new E(),"Main",1<<27).start();
     }
 
 }

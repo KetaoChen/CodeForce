@@ -1,27 +1,69 @@
+package Edu_Div2_90;
+
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 
 
-public class Main implements Runnable
+public class D_Greedy_Edu_90 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            arr = new Integer[n];
+            for (int j = 0; j < n; j++) {
+                arr[j] = in.nextInt();
+            }
+            getRes();
+        }
 
         w.flush();
         w.close();
     }
 
     static PrintWriter w;
-    static int t, k, n;
+    static int t, n;
     static Integer[] arr;
 
     private static void getRes() {
+        // 3 stages
+        // the maximum sum, when this number is the end of the this stage
+        if (n == 1) {
+            w.println(arr[0]);
+            return;
+        }
+        if (n == 2) {
+            w.println(Math.max(arr[0], arr[1]));
+            return;
+        }
 
+        long sum = 0;
+        for (int i = 0; i < n; i++) {
+            if ((i & 1) == 0) sum += arr[i];
+        }
+
+        int[] diff = new int[n / 2];
+        for (int i = 1; i < n; i += 2) {
+            diff[i / 2] = arr[i] - arr[i - 1];
+        }
+        int[] diff2 = new int[(n - 1) / 2];
+        for (int i = 2; i < n; i += 2) {
+            diff2[i / 2 - 1] = arr[i - 1] - arr[i];
+        }
+
+        w.println(sum + Math.max(cal(diff), cal(diff2)));
+    }
+
+    private static long cal(int[] diff) {
+        long max = 0, cur = 0;
+        for (int i = 0; i < diff.length; i++) {
+            cur = Math.max(cur, 0) + diff[i];
+            max = Math.max(max, cur);
+        }
+        return max;
     }
 
     static class InputReader
@@ -204,7 +246,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new D_Greedy_Edu_90(),"Main",1<<27).start();
     }
 
 }

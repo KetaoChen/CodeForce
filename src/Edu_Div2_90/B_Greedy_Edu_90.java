@@ -1,16 +1,20 @@
+package Edu_Div2_90;
+
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 
 
-public class Main implements Runnable
+public class B_Greedy_Edu_90 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = Integer.parseInt(in.nextLine());
+        for (int i = 0; i < t; i++) {
+            s = in.nextLine();
+            getRes();
+        }
 
         w.flush();
         w.close();
@@ -18,10 +22,17 @@ public class Main implements Runnable
 
     static PrintWriter w;
     static int t, k, n;
+    static String s;
     static Integer[] arr;
 
     private static void getRes() {
+        int zero = 0, one = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '0') zero++;
+            else one++;
+        }
 
+        w.println(Math.min(zero, one) % 2 == 1 ? "DA" : "NET");
     }
 
     static class InputReader
@@ -204,7 +215,7 @@ public class Main implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new Main(),"Main",1<<27).start();
+        new Thread(null, new B_Greedy_Edu_90(),"Main",1<<27).start();
     }
 
 }

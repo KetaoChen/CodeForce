@@ -1,25 +1,85 @@
+package Div2_655;
+
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class D_House_Robber_Div2_655 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
-
+        n = in.nextInt();
+        arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = in.nextInt();
+        }
+        getRes();
         w.flush();
         w.close();
     }
 
     static PrintWriter w;
     static int t, k, n;
-    static Integer[] arr;
+    static int[] arr;
 
     private static void getRes() {
+        int l = arr.length;
+        if (l == 1) {
+            w.println(arr[0]);
+            return;
+        }
+        long sum = 0;
+        for (int num : arr) {
+            sum += num;
+        }
+        long min = Math.min(helper(0, l - 2), helper(1, l - 1));
+        w.println(sum - min);
+    }
 
+    private static long helper(int start, int end) {
+        long[][] dp = new long[2][n];
+        for (long[] d : dp) Arrays.fill(d, Long.MAX_VALUE);
+        dp[0][start] = arr[start];
+        dp[1][start] = 0;
+        for (int i = start + 1; i <= end; i++) {
+            if (i - 2 >= 0 && dp[0][i - 2] != Long.MAX_VALUE) {
+                dp[0][i] = dp[0][i - 2] + arr[i];
+            }
+            if (i - 1 >= 0 && dp[0][i - 1] != Long.MAX_VALUE) {
+                dp[1][i] = dp[0][i - 1] - arr[i - 1] + arr[i];
+            }
+            if (i - 2 >= 0 && dp[1][i - 2] != Long.MAX_VALUE) {
+                dp[1][i] = Math.min(dp[1][i], dp[1][i - 2] + arr[i]);
+            }
+        }
+        // for (long[] d : dp) System.out.println(Arrays.toString(d));
+        return Math.min(dp[0][end - 1], dp[1][end]);
+
+//        // sum[i] is the sum when we miss i
+//        long[] sum1 = new long[n + 1], sum2 = new long[n + 1];
+//        for (int i = start; i <= end; i++) {
+//            sum1[i + 1] = sum1[i];
+//            sum2[i + 1] = sum2[i];
+//            if ((i - start) % 2 == 0) {
+//                sum1[i + 1] = sum1[i] + arr[i];
+//            }
+//            else {
+//                sum2[i + 1] = sum2[i] + arr[i];
+//            }
+//        }
+//
+//
+//        long min = Long.MAX_VALUE;
+//        for (int i = start; i <= end; i++) {
+//            long left = start > 0 ? sum1[i - 1] : 0;
+//            System.out.println(i + " " + left + " " + sum2[i + 1]);
+//            long cur = (i - start) % 2 == 0 ? left + sum2[i + 1] : sum2[i - 1] + sum1[end] - sum1[i];
+//            min = Math.min(min, cur);
+//        }
+//        return min;
     }
 
     static class InputReader
@@ -202,7 +262,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new D_House_Robber_Div2_655(),"Main",1<<27).start();
     }
 
 }

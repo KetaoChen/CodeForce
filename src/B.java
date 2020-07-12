@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class B implements Runnable
 {
     @Override
     public void run() {
@@ -202,7 +202,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new B(),"Main",1<<27).start();
     }
 
 }

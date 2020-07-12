@@ -1,14 +1,24 @@
+package Div2_655;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class C_Greedy_Permutation_Div2_655 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            arr = new int[n + 1];
+            for (int k = 1; k <= n; k++) {
+                arr[k] = in.nextInt();
+            }
+            getRes();
+        }
 
         w.flush();
         w.close();
@@ -16,10 +26,29 @@ public class E implements Runnable
 
     static PrintWriter w;
     static int t, k, n;
-    static Integer[] arr;
+    static int[] arr;
 
     private static void getRes() {
+        if (n == 1) {
+            w.println(0);
+            return;
+        }
 
+        int count = 0;
+        boolean same = arr[1] == 1;
+        if (!same) count++;
+        for (int i = 2; i <= n; i++) {
+            boolean check = arr[i] == i;
+            if (same != check) {
+                same = check;
+                if (!check) {
+                    count++;
+                }
+            }
+        }
+
+
+        w.println(Math.min(2, count));
     }
 
     static class InputReader
@@ -202,7 +231,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new C_Greedy_Permutation_Div2_655(),"Main",1<<27).start();
     }
 
 }

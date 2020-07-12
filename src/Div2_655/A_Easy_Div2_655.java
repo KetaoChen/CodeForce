@@ -1,14 +1,23 @@
+package Div2_655;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class A_Easy_Div2_655 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            for (int k = 0; k < n; k++) {
+                w.print(1 + " ");
+            }
+            w.println();
+        }
 
         w.flush();
         w.close();
@@ -202,7 +211,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new A_Easy_Div2_655(),"Main",1<<27).start();
     }
 
 }

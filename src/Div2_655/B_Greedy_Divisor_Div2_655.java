@@ -1,15 +1,22 @@
+package Div2_655;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class E implements Runnable
+public class B_Greedy_Divisor_Div2_655 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
-
+        t = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            int[] res = getRes();
+            w.println(res[0] + " " + res[1]);
+        }
+        // System.out.println(1000000001 / 52579);
         w.flush();
         w.close();
     }
@@ -18,8 +25,16 @@ public class E implements Runnable
     static int t, k, n;
     static Integer[] arr;
 
-    private static void getRes() {
-
+    private static int[] getRes() {
+        if (n % 2 == 0) {
+            return new int[]{n / 2, n / 2};
+        }
+        for (int i = 3; i * i <= n; i++) {
+            if (n % i == 0) {
+                return new int[]{n / i, n - n / i};
+            }
+        }
+        return new int[]{1, n - 1};
     }
 
     static class InputReader
@@ -202,7 +217,7 @@ public class E implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new E(),"Main",1<<27).start();
+        new Thread(null, new B_Greedy_Divisor_Div2_655(),"Main",1<<27).start();
     }
 
 }

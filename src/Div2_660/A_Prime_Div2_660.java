@@ -1,14 +1,20 @@
+package Div2_660;
+
 import java.io.*;
 import java.util.InputMismatchException;
 
 
-public class F implements Runnable
+public class A_Prime_Div2_660 implements Runnable
 {
     @Override
     public void run() {
         InputReader in = new InputReader(System.in);
         w = new PrintWriter(System.out);
-
+        t  = in.nextInt();
+        for (int i = 0; i < t; i++) {
+            n = in.nextInt();
+            getRes();
+        }
 
         w.flush();
         w.close();
@@ -18,8 +24,27 @@ public class F implements Runnable
     static int t, k, n;
     static Integer[] arr;
 
+    // 6 + 10 + 14
     private static void getRes() {
-
+        if (n <= 30) {
+            w.println("NO");
+            return;
+        }
+        w.println("YES");
+        int rest = n - 30;
+        if (rest == 6) {
+            w.println(6 + " " + 10 + " " + 15 + " " + 5);
+            return;
+        }
+        if (rest == 10) {
+            w.println(6 + " " + 10 + " " + 15 + " " + 9);
+            return;
+        }
+        if (rest == 14) {
+            w.println(6 + " " + 10 + " " + 15 + " " + 13);
+            return;
+        }
+        w.println(6 + " " + 10 + " " + 14 + " " + rest);
     }
 
     static class InputReader
@@ -202,7 +227,7 @@ public class F implements Runnable
 
     public static void main(String args[]) throws Exception
     {
-        new Thread(null, new F(),"Main",1<<27).start();
+        new Thread(null, new A_Prime_Div2_660(),"Main",1<<27).start();
     }
 
 }
